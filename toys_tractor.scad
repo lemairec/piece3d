@@ -1,19 +1,8 @@
-r = 20.2;
-cube_l = 7;
-cube_h = 3;
+$fs=$fs/2;
+$fa=$fa/2;
 
-h = 10;
-l = 50;
-
-e = 4;
-
-
-//$fs=$fs/2;
-//$fa=$fa/2;
-
-echelle = 100;
-zoom = 100/echelle;
-
+echelle = 1/82;
+zoom = 100*echelle;
 
 essieu_r=3;
 
@@ -30,6 +19,8 @@ module cran_pneu(d, e, nb){
 }
 
 module roue(d, e, cran=true){
+    //%cylinder(r=d/2, e, center = true);
+    
     rotate_extrude(){
         translate([d/2-e/2,0,0]) scale([1,1.2]) circle (e/2);
     }
@@ -97,6 +88,7 @@ module crochet_male(lg, l=8, support=true){
  * TRACTOR
  **/
 
+zoom_tractor = 0.82*zoom;
 
 module masse(){
     cube([1,20,10]);
@@ -134,17 +126,15 @@ module cabine(){
     }
 }
 
-
-
 module tractor_body(){
-    translate([0,0,2*zoom])essieu(31*zoom, 7*zoom);
-    translate([0,40*zoom,0])essieu(31*zoom, 6*zoom);
-    translate([0,15*zoom,0]) scale(zoom) capot();
-    translate([0,-5*zoom,0])crochet_female(22*zoom);
+    translate([0,0,2*zoom_tractor])essieu(31*zoom_tractor, 7*zoom_tractor);
+    translate([0,40*zoom_tractor,0])essieu(31*zoom_tractor, 6*zoom_tractor);
+    translate([0,15*zoom_tractor,0]) scale(zoom_tractor) capot();
+    translate([0,-5*zoom_tractor,0])crochet_female(22*zoom_tractor);
     difference(){
-        translate([0,-5*zoom,0]) scale(zoom)cabine();
+        translate([0,-5*zoom_tractor,0]) scale(zoom_tractor)cabine();
         for(i=[0,1]){
-            mirror([i,0,0]) translate([-31/2*zoom,0,4*zoom])rotate([0,90,0])cylinder(r=(25+4)/2*zoom,4.5*zoom);
+            mirror([i,0,0]) translate([-31/2*zoom_tractor,0,4*zoom_tractor])rotate([0,90,0])cylinder(r=(25+4)/2*zoom_tractor,4.5*zoom_tractor);
         }
     }
 }
@@ -154,18 +144,18 @@ module tractor_body(){
 
 module tractor(mode){
     if(mode==0){
-        x=13*zoom;
-        translate([0,x,8*zoom])tractor_body();
+        x=13*zoom_tractor;
+        translate([0,x,8*zoom_tractor])tractor_body();
         for(i=[0,1]){
-            mirror([i,0,0])translate([31/2*zoom,x,12*zoom])rotate([0,90,0])roue(25*zoom,6*zoom);
-            mirror([i,0,0])translate([31/2*zoom,40*zoom+x,10*zoom])rotate([0,90,0]) roue(20*zoom,5*zoom);
+            mirror([i,0,0])translate([31/2*zoom_tractor,x,12*zoom_tractor])rotate([0,90,0])roue(25*zoom_tractor,6*zoom_tractor);
+            mirror([i,0,0])translate([31/2*zoom_tractor,40*zoom_tractor+x,10*zoom_tractor])rotate([0,90,0]) roue(20*zoom_tractor,5*zoom_tractor);
         }
     }
     if(mode==1){
         translate([0,0,0])tractor_body();
         for(i=[0,1]){
-            mirror([i,0,0])translate([33,0,3])roue(20,5);
-            mirror([i,0,0])translate([33,30,3.6])roue(25,6);
+            mirror([i,0,0])translate([33,0,3])roue(20*zoom_tractor,5*zoom_tractor);
+            mirror([i,0,0])translate([33,30,3.6])roue(25*zoom_tractor,6*zoom_tractor);
         }
     }
     if(mode==2){
@@ -173,11 +163,15 @@ module tractor(mode){
     }
     if(mode==3){
         for(i=[0,1]){
-            mirror([i,0,0])translate([14,0,3])roue(20,5);
-            mirror([i,0,0])translate([14,30,3.6])roue(25,6);
+            mirror([i,0,0])translate([14,0,3])roue(20*zoom_tractor,5*zoom_tractor);
+            mirror([i,0,0])translate([14,30,3.6])roue(25*zoom_tractor,6*zoom_tractor);
         }
     }
 }
+
+/**
+ * BENNE
+ **/
 
 //benne_l = 70;
 //benne_caisse_h = 28;
@@ -248,8 +242,37 @@ module benne(mode){
 }
 
 /**
+ * BONHOMME
+ **/
+
+module bonhomme(){
+    h = 1950*echelle;
+    r1 = 150*echelle;
+    r2 = 200*echelle;
+    
+    r_jambe = 100*echelle;
+    
+    hull(){
+        translate([0,0,(h-r2)/2]) cube([r_jambe*2, r_jambe*4*0.9, 1], center=true);
+        translate([0,0,(h-r2)]) cylinder(1, r = 100*echelle);
+    }//cylinder((h-r2)/2, r2, 100*echelle);
+    translate([0,0,h-r2])sphere(r= r2);
+    
+    translate([0,r_jambe*0.8,0])cylinder(h/2, r= r_jambe);
+    translate([0,-r_jambe*0.8,0])cylinder(h/2, r= r_jambe);
+    
+}
+
+
+/**
  * DECHAUMEUR
  **/
+
+e = 4000/3*echelle;
+dechaumeur_lg = 4000*echelle;
+dechaumeur_y1 = 1200*echelle;
+dechaumeur_y2 = 2400*echelle;
+dechaumeur_y3 = 3900*echelle;
 
 module dent(){
     h=19;
@@ -284,11 +307,6 @@ module dent2(h, i=0){
     translate([-1,0,5]) cube([2,4,h-5]);
 }
 
-dechaumeur_lg = 45;
-e = 16;
-dechaumeur_y1 = 13;
-dechaumeur_y2 = 26;
-dechaumeur_y3 = 45;
 
 module dechaumeur_body(){
     translate([0,0,8])crochet_male(30, 10, false);
@@ -337,22 +355,24 @@ module dechaumeur(mode){
  * COVER CROP
  **/
 
-cover_crop_lg = 20;
-y1 = 7;
-cover_crop_essieu = 30;
-y3 = 53;
+cover_crop_lg = 1000*echelle;
+y1 = 600*echelle;
+cover_crop_essieu = 2500*echelle;
+y3 = 4300*echelle;
+
+cover_crop_lg1 = 4000*echelle;
+cover_crop_r = 520*echelle;
 
 module cover_crop_disque(z){
-    l = 52;
+    l = cover_crop_lg1;
     nbr = 16;
-    r=5.5;
     hull(){
         translate([-l/2,-2,z])cube([l,4,2]);
     
-        translate([0,0,r]) rotate([0,90,0]) cylinder(r=2, l, center=true);
+        translate([0,0,cover_crop_r]) rotate([0,90,0]) cylinder(r=2, l, center=true);
     }
     for(i=[0:nbr-1]){
-        translate([l/2-i*l/(nbr-1),0,r]) rotate([0,90,0]) cylinder(r=r, 1, center=true);
+        translate([l/2-i*l/(nbr-1),0,cover_crop_r]) rotate([0,90,0]) cylinder(r= cover_crop_r, 1, center=true);
     }
 }
 
@@ -391,12 +411,12 @@ module cover_crop(mode){
  * SEMOIR dimension 100
  **/
 
-semoir_lg = 30*100/64;
-e = 16;
-dechaumeur_y1 = 13;
-dechaumeur_y2 = 26;
-dechaumeur_y3 = 45;
-h=8;
+echelle_semoir = 1/64;
+
+semoir_l = 3000*echelle_semoir;
+
+roue_semoir = 600*echelle_semoir;
+h=10;
 
 module semoir_body(){
     translate([0,0,8])crochet_male(10, 10, false);
@@ -407,14 +427,92 @@ module semoir_body(){
     
     #translate([-20,0,0]) cube([40,2,0.5]);
     hull(){
-        translate([-semoir_lg/2,10,h])cube([semoir_lg, 2 ,2]);
-        translate([0,15,h+10]) rotate([0,90,0]) cylinder(r=2, semoir_lg, center = true);
-        translate([0,5,h+10]) rotate([0,90,0]) cylinder(r=2, semoir_lg, center = true);
+        translate([-semoir_l/2,10,h])cube([semoir_l, 2 ,2]);
+        translate([0,15,h+10]) rotate([0,90,0]) cylinder(r=2, semoir_l, center = true);
+        translate([0,5,h+10]) rotate([0,90,0]) cylinder(r=2, semoir_l, center = true);
     }
+    
+    hull(){
+        translate([-semoir_l/2+10,10,h])cube([semoir_l-20, 2 ,2]);
+        translate([-semoir_l/2,10,roue_semoir/2])cube([semoir_l, 2 ,2]);
+    }
+        
+    essieu(28,7);
+    translate([-semoir_l/2,12,roue_semoir/2]) rotate([0,90,0]) roue(roue_semoir,3, false);
     
 }
 
 module semoir(mode){
+    if(mode){
+        translate([0,0,19]) rotate([0,180,0]) semoir_body();
+    } else {
+        translate([0,-10,0])rotate([0,0,180]) semoir_body();
+    }
+}
+
+/**
+ * Vader dimension 100
+ **/
+
+vader_echelle = 1/64;
+
+vader_l = 4000*vader_echelle;
+
+vader_roue_d = 800*vader_echelle;
+vader_roue_lg = 180*vader_echelle;
+
+vader_roue_x = 3000*vader_echelle;
+
+vader_disque_d = 300*vader_echelle;
+vader_disque_x2 = 2300*vader_echelle;
+vader_disque_x1 = 2000*vader_echelle;
+
+
+vader_h=5;
+
+module vader_roue(){
+    roue(vader_roue_d,vader_roue_lg, false);
+}
+
+module vader_disque(){
+    cylinder(1, r=vader_disque_d/2);
+}
+
+module semoir_body(){
+    translate([0,0,8])crochet_male(10, 10, false);
+    hull(){
+        translate([-5,0,17]) cube([10,2,2]);
+        translate([-5,10,h]) cube([10,2,2]);
+    }
+    
+    #translate([-20,0,0]) cube([40,2,0.5]);
+    hull(){
+        translate([-semoir_l/2,vader_disque_x1,vader_h])cube([semoir_l, 6 ,2]);
+        translate([0,vader_disque_x1-10,vader_h+20]) rotate([0,90,0]) cylinder(r=2, semoir_l, center = true);
+        translate([0,vader_disque_x1+15,vader_h+20]) rotate([0,90,0]) cylinder(r=2, semoir_l, center = true);
+    }
+    
+    hull(){
+        translate([-semoir_l/2+10,10,h])cube([semoir_l-20, 2 ,2]);
+        translate([-semoir_l/2,10,roue_semoir/2])cube([semoir_l, 2 ,2]);
+    }
+        
+    for(i = [-6:5]){
+         translate([semoir_l/12*(i+0.5),vader_roue_x,roue_semoir/2]) rotate([0,90,0]) vader_roue();
+    }
+    
+    for(i = [-6:5]){
+         translate([semoir_l/12*(i+0.5),vader_disque_x1,vader_disque_d/2]) rotate([0,90,0]) vader_disque();
+    }
+    
+    for(i = [-5:5]){
+         translate([semoir_l/12*(i),vader_disque_x2,vader_disque_d/2]) rotate([0,90,0]) vader_disque();
+    }
+   
+    
+}
+
+module vader(mode){
     if(mode){
         translate([0,0,19]) rotate([0,180,0]) semoir_body();
     } else {
@@ -438,13 +536,20 @@ goulotte_angle = -10;
 
 tremie_lg = 20;
 
-coupe_l = 70;
-coupe_mais_l = 60;
-convoyeur_lg= 16;
-
 goulotte_l=50;
 goulotte_r=2.5;
 goulotte_h = 32;
+
+//coupe
+coupe_l = 6000*echelle;
+coupe_rabatteur_l = coupe_l - 200*echelle;
+
+nb_coueilleur = 6;
+coupe_mais_l = nb_coueilleur*750*echelle;
+convoyeur_lg= 16;
+
+
+
 
 module coupe_core(y){
    hull(){
@@ -462,21 +567,20 @@ module coupe(l){
       translate([0,y-20,1]) rotate([0,90,0])cylinder(r=1, coupe_l, center =true);
      
    } 
-   translate([0,y-10,10]) rotate([0,90,0])cylinder(r=8, coupe_l-10, center =true);
+   translate([0,y-10,10]) rotate([0,90,0])cylinder(r=8, coupe_rabatteur_l, center =true);
 }
 
 module coupe_mais(l){
-   y=-9;
-    nb = 6;
+    y=-9;
    coupe_core(y);
    hull(){
       translate([0,y,5]) rotate([0,90,0])cylinder(r=5, coupe_mais_l, center =true);
       translate([0,y-20,1]) rotate([0,90,0])cylinder(r=1, coupe_mais_l, center =true);    
    }
-   for(i = [1:nb-1]){
+   for(i = [1:nb_coueilleur-1]){
        hull(){
-           translate([-coupe_mais_l/2 + i*coupe_mais_l/nb,y-5,0]) cylinder(6, r= 4);
-           translate([-coupe_mais_l/2 + i*coupe_mais_l/nb,y-28,0])  cylinder(2, r=1);
+           translate([-coupe_mais_l/2 + i*coupe_mais_l/nb_coueilleur,y-5,0]) cylinder(6, r= 4);
+           translate([-coupe_mais_l/2 + i*coupe_mais_l/nb_coueilleur,y-28,0])  cylinder(2, r=1);
        }
    }
    for(i=[0,1]){
@@ -597,7 +701,7 @@ module moissoneuse(mode){
     if(mode==0){
         y=0;
         translate([0,y,8])moissoneuse_body();
-        coupe_mais();
+        coupe();
         translate([17,moissoneuse_cabine_l+5+y,goulotte_h+8])rotate([0,goulotte_angle,0])  rotate([0,0,90]) moissoneuse_goulotte();
         for(i=[0,1]){
             mirror([i,0,0])translate([-essieu_d/2,y+moissoneuse_y1,12])rotate([0,-90,0])roue(25,6);
@@ -632,10 +736,11 @@ module moissoneuse(mode){
     }
 }
 
+//translate([-20,0,0])bonhomme();
 tractor(0);
 //dechaumeur(0);
 //cover_crop(0);
-semoir(0);
+//vader(0);
 //moissoneuse(0);
-//benne(0);
+benne(0);
 //essieu(33);
