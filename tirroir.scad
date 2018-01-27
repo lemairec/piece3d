@@ -2,9 +2,9 @@ include <config.scad>
 //$fs=$fs/2;
 //$fa=$fa/2;
 
-tiroir_l = 380;
-tiroir_lg = 380;
-tiroir_h = 90;
+tiroir_l = 300;
+tiroir_lg = 450;
+tiroir_h = 50;
 tiroir_h2 = 50;
 
 $fn=100;
@@ -12,13 +12,13 @@ $fn=100;
 e = 3; //2.74
 cran = 25;
 
-tiroir_division_lg = [tiroir_lg/2];
+tiroir_division_lg = [100, 350];
 
-tiroir_division_l1 = [120, tiroir_l-120-e];
-tiroir_division_l1_lg = tiroir_lg/2+e;
+tiroir_division_l1 = [150];
+tiroir_division_l1_lg = 100+e;
 
-tiroir_division_l2 = [tiroir_l/3+30];
-tiroir_division_l2_lg = tiroir_lg - tiroir_division_l1_lg+e;
+tiroir_division_l2 = [60, 120, 210];
+tiroir_division_l2_lg = 250+e;
 
 
 plateau_l = tiroir_l-110;
@@ -89,7 +89,7 @@ module fond_tiroir(){
             translate([i, 0])cran_y(tiroir_division_l1_lg, e, cran, true);
         }
         for(i = tiroir_division_l2){
-            translate([i, tiroir_lg+e-tiroir_division_l2_lg-e])cran_y(tiroir_division_l2_lg, e, cran, true);
+            translate([i, 100])cran_y(tiroir_division_l2_lg, e, cran, true);
         }
     }
 }
@@ -112,11 +112,6 @@ module tiroir_l_left(){
         for(i = tiroir_division_l1){
             translate([i, 0])cran_y(tiroir_h2, e, cran, true);
         }
-        
-        hull(){
-            translate([tiroir_l/2-70, tiroir_h]) circle(20);
-            translate([tiroir_l/2+70, tiroir_h]) circle(20);
-        }
     }
 }
 
@@ -124,9 +119,7 @@ module tiroir_l_right(){
     difference(){
         longueur(tiroir_l, tiroir_h);
         
-        for(i = tiroir_division_l2){
-            translate([i, 0])cran_y(tiroir_h, e, cran, true);
-        }
+        
     }
 }
 
@@ -216,14 +209,14 @@ if(true){
             translate([i,0]) rotate([90, 0, 90]) linear_extrude(e2)tiroir_division_l1();
         }
         for(i = tiroir_division_l2){
-            translate([i, tiroir_lg+e-tiroir_division_l2_lg-e]) rotate([90, 0, 90]) linear_extrude(e2)tiroir_division_l2();
+            translate([i, 100]) rotate([90, 0, 90]) linear_extrude(e2)tiroir_division_l2();
         }
         
         
     }
     
     translate([-tiroir_l/2 +1.5*e, -tiroir_lg/2 +1.5*e,tiroir_h2]) union(){ 
-        plateau(plateau_l, plateau_lg, plateau_h, true, e2);
+        //plateau(plateau_l, plateau_lg, plateau_h, true, e2);
         
         
         
