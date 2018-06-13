@@ -484,29 +484,45 @@ module semoir_body(){
         translate([-5,0,17]) cube([10,2,2]);
         translate([-5,10,h]) cube([10,2,2]);
     }
+    hull(){
+        translate([-semoir_l/2+10,10,h])cube([semoir_l-20, 2 ,2]);
+        translate([-semoir_l/2,10,vader_h])cube([semoir_l, 2 ,2]);
+    }
+    
+    translate([-semoir_l/2,10,vader_h]) cube([2,22,2]);
+    translate([+semoir_l/2-2,10,vader_h]) cube([2,22,2]);
+    translate([-1,10,vader_h]) cube([2,22,2]);
     
     #translate([-20,0,0]) cube([40,2,0.5]);
+    
+    //tremie
     hull(){
         translate([-semoir_l/2,vader_disque_x1,vader_h])cube([semoir_l, 6 ,2]);
         translate([0,vader_disque_x1-10,vader_h+20]) rotate([0,90,0]) cylinder(r=2, semoir_l, center = true);
         translate([0,vader_disque_x1+15,vader_h+20]) rotate([0,90,0]) cylinder(r=2, semoir_l, center = true);
     }
     
-    hull(){
-        translate([-semoir_l/2+10,10,h])cube([semoir_l-20, 2 ,2]);
-        translate([-semoir_l/2,10,roue_semoir/2])cube([semoir_l, 2 ,2]);
-    }
+   
         
     for(i = [-6:5]){
          translate([semoir_l/12*(i+0.5),vader_roue_x,roue_semoir/2]) rotate([0,90,0]) vader_roue();
     }
     
     for(i = [-6:5]){
-         translate([semoir_l/12*(i+0.5),vader_disque_x1,vader_disque_d/2]) rotate([0,90,0]) vader_disque();
+        hull(){
+            translate([semoir_l/12*(i+0.5),vader_disque_x1,vader_disque_d/2]) 
+                rotate([0,90,0]) vader_disque();
+            translate([semoir_l/12*(i+0.5),vader_disque_x1,vader_disque_d])
+                cube([1,vader_disque_d,2]);
+        }
     }
     
     for(i = [-5:5]){
-         translate([semoir_l/12*(i),vader_disque_x2,vader_disque_d/2]) rotate([0,90,0]) vader_disque();
+        hull(){
+            translate([semoir_l/12*(i),vader_disque_x2,vader_disque_d/2]) rotate([0,90,0]) vader_disque();
+            translate([semoir_l/12*(i),vader_disque_x1,vader_disque_d])
+                cube([1,vader_disque_d,2]);
+        }
     }
    
     
@@ -737,10 +753,10 @@ module moissoneuse(mode){
 }
 
 //translate([-20,0,0])bonhomme();
-tractor(0);
+//tractor(0);
 //dechaumeur(0);
 //cover_crop(0);
-//vader(0);
-//moissoneuse(0);
-benne(0);
+vader(0);
+//moissoneuse(1);
+//benne(0);
 //essieu(33);
