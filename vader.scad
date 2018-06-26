@@ -14,7 +14,7 @@ canelure2_nbr = 30;
 canelure_body_h = 47;
 canelure_body_d = 28;
 
-canelure_body_int_d = 24;
+canelure_body_int_d = 23.5;
 
 canelure_body_z = 13;
 
@@ -92,7 +92,7 @@ module canelure2_p(){
     }
 }
 
-module piece2(){
+module piece2(support = true){
     difference(){
         union(){
             canelure1();
@@ -105,6 +105,10 @@ module piece2(){
     for(i=[0:canelure2_nbr]){
         rotate([0,0,i*360/canelure2_nbr])
             translate([canelure2_d/2, 0,z_canelure2+canelure2_h/2]) canelure2_p();
+    }
+    
+    if(support){
+        support2(0);
     }
 }
 
@@ -172,5 +176,4 @@ module support2(dh=0){
 }
 
 
-piece2();
-support2();
+piece2(true);
