@@ -110,7 +110,7 @@ module piece2(){
 
 module piece3(support = true){
     dh = 3;
-    r = canelure_body_d/2+6;
+    r = canelure_body_d/2+4;
     
     a = 45;
     
@@ -131,8 +131,8 @@ module piece3(support = true){
         translate([0,0,-1])cylinder(r = canelure_body_int_d/2, canelure_body_h+2+dh);
     }
     
-    if(true){
-        for(i=[canelure_body_int_d/2, r-4, r, r+5, canelure1_d/2]){
+    if(support){
+        for(i=[canelure_body_int_d/2+support_e, r, r+5, canelure1_d/2]){
             difference(){
                 cylinder(r = i, dh);
                 translate([0,0,-1])cylinder(r = i-support_e, dh+2);
