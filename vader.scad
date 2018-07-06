@@ -36,20 +36,19 @@ module d_cylinder(r, h, e, angle){
 
 module canelure1_p(){
     c = 10;
-    c1 = 5;
+    c1 = 4.5;
     hull(){
         translate([0,-c1/2,-c1/2])cube([c1,c1,c1]);
-        translate([-2,-c/2,-c/2])cube([1,c,c]);
+        translate([-2,-c/2,-c1/2])cube([1,c,c1]);
     }
 }
 
 module support_canelure(h){
     c = 10;
-    c1 = 5;
-    difference(){
-        translate([support_e,-c1/2,0])cube([c1-support_e,c1,h]);
-        translate([0,-c1/2+support_e,-1])cube([c1+1,c1-2*support_e,h+2]);
-    }
+    c1 = 4.5;
+    translate([support_e,0,0]) cube([c1-support_e,support_e,h]);
+    translate([c1-support_e,-c1/2,0]) cube([support_e,c1,h]);
+    
 }
 
 module canelure1(){
@@ -61,26 +60,6 @@ module canelure1(){
             translate([canelure1_d/2, 0,canelure1_h/2-canelure_h]) canelure1_p();
     }      
 }
-
-module piece1(){
-    
-    difference(){
-        translate([0,0,-canelure1_h/2])canelure1();
-        cylinder(r=d_int/2,canelure1_h+1, center = true);
-        cylinder(r=d_int/2,canelure1_h+1, center = true);
-        
-        for(i=[0,1]){
-            mirror([0,0,i]) translate([0,0,canelure1_h/2-d_int2_h])cylinder(r=d_int2/2,10);
-        }
-        
-        for(i=[0,90]){
-            rotate([0,0,i]) cube([34,5,canelure1_h+1], center=true);
-        }
-    }
-}
-
-
-
 
 module canelure2_p(){
     c1 = 1;
