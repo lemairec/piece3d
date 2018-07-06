@@ -5,13 +5,15 @@ canelure1_h = 34;
 canelure1_d =  58;
 canelure1_nbr = 11;
 
+z_canelure2 = 42;
+
 canelure2_d = 53;
 canelure2_h = 5;
 canelure2_nbr = 30;
 
 
 
-canelure_body_h = 47;
+canelure_body_h = z_canelure2+canelure2_h;
 canelure_body_d = 28;
 
 canelure_body_int_d = 23.5;
@@ -22,7 +24,6 @@ canelure_body_z = 13;
 canelure_h = 16/2;
 support_e = 0.5;
 
-z_canelure2 = 42;
 
 
 module d_cylinder(r, h, e, angle){
