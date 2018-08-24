@@ -1,11 +1,11 @@
 $fs=$fs/4;
 $fa=$fa/4;
 
-canelure1_h = 34;
+canelure1_h = 34.5;
 canelure1_d =  58;
 canelure1_nbr = 11;
 
-z_canelure2 = 42;
+z_canelure2 = 41.5;
 
 canelure2_d = 53;
 canelure2_h = 5;
