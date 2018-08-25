@@ -72,7 +72,7 @@ module canelure2_p(){
     }
 }
 
-module piece2(support = true){
+module piece(support = true){
     difference(){
         union(){
             canelure1();
@@ -80,6 +80,64 @@ module piece2(support = true){
             translate([0,0,z_canelure2]) cylinder(r = canelure2_d/2, canelure2_h);
         }
         translate([0,0,-1])cylinder(r = canelure_body_int_d/2, canelure_body_h+2, $fn=6);
+    }
+        
+    for(i=[0:canelure2_nbr]){
+        rotate([0,0,i*360/canelure2_nbr])
+            translate([canelure2_d/2, 0,z_canelure2+canelure2_h/2]) canelure2_p();
+    }
+    
+    if(support){
+        support2(0);
+    }
+}
+
+metal_h = 15.5;
+metal_d = 25.5;
+
+metal_support_d1 = 28.5;
+metal_support_d = 30;
+metal_support_e = 2;
+
+metal_support_h = 8;
+metal_support_h2 = 12.5;
+metal_support_dh = metal_h- metal_support_h2;
+
+module traceur(){
+    difference(){
+        union(){
+            hull(){
+                    translate([0,0,-1])cylinder(r = metal_d/2, metal_h+1);
+                    translate([0,0,-1])cylinder(r = metal_d/2-2, metal_h+3);
+                //translate([0,0,metal_h])sphere(r = metal_d/2);
+            }
+            
+            hull(){
+                translate([-metal_support_e/2,-metal_support_d/2,-1])cube([metal_support_e, metal_support_d, metal_h+1]);
+                cylinder(r=10, metal_h);
+            }
+        }
+        
+        for(i=[0,1]){
+            mirror([0,i,0])translate([-5,metal_support_d1/2,metal_support_h])cube([10,10,metal_support_h2-metal_support_h]);
+        }
+    }
+    
+    
+    
+}
+
+module piece2(support = true){
+    difference(){
+        union(){
+            canelure1();
+            cylinder(r = canelure_body_d/2, canelure_body_h);
+            translate([0,0,z_canelure2]) cylinder(r = canelure2_d/2, canelure2_h);
+        }
+        translate([0,0,-1])cylinder(r = canelure_body_int_d/2, canelure_body_h+2);
+        
+        traceur();
+        
     }
         
     for(i=[0:canelure2_nbr]){
@@ -155,5 +213,17 @@ module support2(dh=0){
     
 }
 
+module test(){
+    cube([20,10,support_e]);
+    for(i=[0:20/4]){
+        translate([4*i,0,0])cube([support_e,10,20]);
+    
+    }
+}
 
+/*difference(){
+    cylinder(r=18, 20);
+    translate([0,0,-1])cylinder(r = canelure_body_int_d/2, canelure_body_h+2);
+    traceur();
+}*/
 piece2(true);
