@@ -127,7 +127,7 @@ module traceur(){
     
 }
 
-module piece2(support = true){
+module piece2(aimant, support = true){
     difference(){
         union(){
             canelure1();
@@ -137,7 +137,11 @@ module piece2(support = true){
         translate([0,0,-1])cylinder(r = canelure_body_int_d/2, canelure_body_h+2);
         
         traceur();
-        
+        if(aimant){
+            for(i=[0:3]){
+                rotate([0,0,90*i])translate([-48/2,0,-1])cylinder(r = 6.4/2, 21.5);
+            }
+        }
     }
         
     for(i=[0:canelure2_nbr]){
