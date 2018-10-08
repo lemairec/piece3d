@@ -1,29 +1,35 @@
-$fs=$fs/2;
-$fa=$fa/2;
+$fs=$fs/4;
+$fa=$fa/4;
 
 echelle = 1/64;
 e = echelle;
+
+fosse_x = 300*echelle;
 fosse_l = 4000*echelle;
 fosse_lg = 4000*echelle;
-fosse_h1 = 1000*echelle;
-fosse_h2 = 6000*echelle;
+fosse_h1 = 500*echelle;
+fosse_h2 = 4600*echelle;
+fosse_t_h = 5000*echelle;
 
 
 elevateur_prof = 7000*echelle;
 elevateur_h = 9000*echelle;
-elevateur_tuyau_h = elevateur_h - 500*echelle;
 
-cellule_gd_r = 8000*echelle/2;
-cellule_pt_r = 8000*echelle/4;
+cellule_gd_r = 8900*echelle/2;
+cellule_pt_r = cellule_gd_r/2;
 cellule_h = 6000*echelle;
 
 redler_h = cellule_h+1000*e;
 
-batiment_h = 6000*e;
-batiment_h2 = 9000*e;
+batiment_h = 7000*e;
+batiment_h2 = 9500*e;
 batiment_lg = 9000*e;
 
+batiment_hanvent = 4000*e;
+batiment_hanvent_h = 5000*e;
+
 batiment_travee = 4500*e;
+batiment_passerelle_h = 6500*e;
 
 fosse2_h1 = 1000*echelle;
 fosse2_h2 = 3000*echelle;
@@ -31,12 +37,14 @@ fosse2_mur_h = 1000*echelle;
 
 trou_h = fosse2_h2+500*e;
     
-elevateur2_prof = fosse2_h2 + 800*echelle;
+elevateur2_prof = fosse2_h2 + 1500*echelle;
 
 
+elevateur100t=true;
+i = 8;
 
 module fosse(){
-    hull(){
+    translate([0,fosse_x,0]) hull(){
         translate([-fosse_l/2,0,-fosse_h1]) cube([fosse_lg,fosse_l,fosse_h1]);
         translate([0,0,-fosse_h2]) cube([1,1,1]);
     }
@@ -44,13 +52,13 @@ module fosse(){
 module fosse_t(){
     hull(){
         translate([-fosse_l/2,-fosse_l,-fosse_h1]) cube([fosse_lg,3000*e,fosse_h1]);
-        translate([-1000*e,-1000*e,-fosse_h2]) cube([1,1,1]);
+        translate([-1000*e,-1000*e,-fosse_t_h]) cube([1,1,1]);
     }
     
     hull(){
-        translate([-000*e,-fosse_l,-fosse_h1]) cube([2000*e, fosse_lg-300*e,fosse_h1]);
+        translate([-000*e,-fosse_l,-fosse_h1]) cube([2000*e, fosse_lg-00*e,fosse_h1]);
         translate([2000*e,-500*e,-4000*e]) cube([1,1,1]);
-        translate([000*e,-500*e,-fosse_h2]) cube([1,1,1]);
+        translate([000*e,-500*e,-fosse_t_h]) cube([1,1,1]);
     }
 }
 
@@ -62,7 +70,7 @@ module moi(){
 module camion(){
     camion_l = 12000*e;
     camion_lg = 2500*e;
-    camion_h = 5000*e;
+    camion_h = 4500*e;
     camion_h1 = 1000*e;
     difference(){
         translate([-camion_lg/2,0,camion_h1])  cube([camion_lg, camion_l, camion_h-camion_h1]);
@@ -101,8 +109,8 @@ module cellule_gd1(){
 
 module cellule_pt(){
     difference(){
-        cylinder(r=cellule_gd_r/2, cellule_h);
-        translate([0,0,-1]) cylinder(r=cellule_gd_r/2-1, cellule_h+2);
+        cylinder(r=cellule_pt_r, cellule_h);
+        translate([0,0,-1]) cylinder(r=cellule_pt_r-1, cellule_h+2);
     }
 }
 
@@ -110,9 +118,9 @@ module redler(l){
     translate([400*e,0,0]) cube([l,200*e,200*e]);
 }
 
-module tuyau_camion2(){
+module tuyau_camion_redler(){
     translate([-batiment_travee,-000*e,redler_h-300*e]) rotate([-90-40, 0,0]) 
-        cylinder(r=150*e, 3000*e);
+        cylinder(r=150*e, 2000*e);
 }
 
 module redler_bas(){
@@ -126,51 +134,104 @@ module galerie_bas(l){
 
 
 
-batiment_l = batiment_travee*9;
+batiment_l = batiment_travee*10;
     
 module batiment(){
-    for(i=[0:9]){
+    for(i=[0:10]){
         translate([batiment_travee*2.5-i*batiment_travee,-batiment_lg/2,0])  cylinder(r=250*e/2, batiment_h);
         translate([batiment_travee*2.5-i*batiment_travee,batiment_lg/2,0])  cylinder(r=250*e/2, batiment_h);
+        translate([batiment_travee*2.5-i*batiment_travee-250*e/2
+            ,-batiment_lg/2-250*e,batiment_passerelle_h-300*e])
+            cube([250*e, batiment_lg + 2200*e, 250*e]);
     }
     hull(){
-        translate([-batiment_travee*6.5,-batiment_lg/2-500*e,batiment_h])cube([batiment_l,1,1]);
-        translate([-batiment_travee*6.5,0,batiment_h2])cube([batiment_l,1,1]);
+        translate([-batiment_travee*7.5,-batiment_lg/2-500*e,batiment_h])cube([batiment_l,1,1]);
+        translate([-batiment_travee*7.5,0,batiment_h2])cube([batiment_l,1,1]);
     }
     hull(){
-        translate([-batiment_travee*6.5,0,batiment_h2])cube([batiment_l,1,1]);
-        translate([-batiment_travee*6.5,batiment_lg/2+2500*e,batiment_h])cube([batiment_l,1,1]);
+        translate([-batiment_travee*7.5,0,batiment_h2])cube([batiment_l,1,1]);
+        translate([-batiment_travee*7.5,batiment_lg/2+batiment_hanvent,batiment_hanvent_h])cube([batiment_l,1,1]);
         
     }
     
+    translate([-batiment_travee*7.5,-1000*e,batiment_passerelle_h])cube([batiment_l,1500*e,1]);
+        
 }
 
 
 
 /*
-*
+* old
 */
 
 
 module elevateur1(){
-    translate([-1200*e,-500*e,0])  elevateur();
+    translate([-1200*e,-300*e,0])  elevateur();
 }
 module puit_elevateur1(){
-    translate([-2000*e,-900*e,-elevateur_prof]) cube([1800*e,800*e,elevateur_prof]);
+    translate([-2000*e,-800*e,-elevateur_prof]) cube([1800*e,800*e,elevateur_prof]);
+}
+/**
+* utile
+**/
+
+module elevateur_(lg_tete, tete, lg, ep, pied, l){
+    lg_pied = lg_tete;
+    translate([lg/2-ep,0,0]) cube([ep,ep,l]);
+    translate([-lg/2,0,0]) cube([ep,ep,l]);
+    translate([-lg_pied/2,0,0]) cube([lg_pied, ep, pied]);
+    translate([-lg/2,0,l-tete]) cube([lg_tete, ep, tete]);
+}
+
+module elevateur_14n(l){
+    elevateur_(1115*e, 910*e, 788*e, 266*e, 840*e, l);
+}
+
+module elevateur_20n(l){
+    elevateur_(1420*e, 1117*e, 994*e, 332*e, 1110*e, l);
 }
 
 
-module fosse2(){
-    hull(){
-        translate([-fosse_l/2,0,-fosse2_h1]) cube([fosse_lg,fosse_l,fosse_h1]);
-        translate([0,0,-fosse2_h2]) cube([1,fosse_lg,1]);
+/**
+* plan 1
+**/
+
+module fosse2bis(lg){
+    difference(){
+        hull(){
+            translate([-lg/2,0,-fosse2_h1]) cube([lg,lg,fosse_h1]);
+            translate([0,0,-fosse2_h2]) cube([1,lg,1]);
+        }
+        translate([-lg/2,lg-1000*e,-fosse2_h2]) rotate([-45,0,0]) cube([100,100,100]);
     }
 }
 
-module elevateur_new(){
-    translate([-1200*e,-500*e,0]) translate([0,0,-elevateur2_prof]) cube([300*e,300*e,elevateur_h+elevateur2_prof]);
-    translate([-1200*e,-500*e,0]) translate([400*e,0,-elevateur2_prof]) cube([300*e,300*e,elevateur_h+elevateur2_prof]);
+module fosse2(){
+    difference(){
+        fosse2bis(fosse_l);
+        translate([0,1,1]) fosse2bis(fosse_l-2);
+    }
 }
+
+module elevateur_new2(){
+    translate([-700*e,-500*e,-elevateur2_prof])elevateur_14n();
+}
+
+module tuyau_camion2(){
+    translate([-100*e,-100*e,elevateur_h-1200*e]) rotate([0,-90-32, -35]) 
+        cylinder(r=150*e, 5000*e);
+}
+
+module tuyau_camion(){
+    if(elevateur100t){
+        translate([-1500*e,-100*e,elevateur_h-1400*e]) rotate([0,-90-36, -50]) 
+            cylinder(r=150*e, 4000*e);
+    }else {
+        translate([-100*e,-100*e,elevateur_h-1200*e]) rotate([0,-90-32, -35]) 
+            cylinder(r=150*e, 5000*e);
+    }
+}
+
 
 module redler_new(){
     redler_l = 4500*e;
@@ -187,12 +248,10 @@ module support_fosse(){
             mirror([i,0,0]) translate([500*e,y,-trou_h+800*e-p]) rotate([0,-46,0])cube([2200*e,p,p]);
         }
     }
+    translate([-fosse_l/2,fosse_l-p,-fosse2_h2+800*e-p]) cube([fosse_l,p,p]);
 }
 
-module tuyau_camion(){
-    translate([-500*e,-000*e,elevateur_tuyau_h]) rotate([0,-90-40, -35]) 
-        cylinder(r=150*e, 5000*e);
-}
+
 
 module mur_new(){
     difference(){
@@ -203,11 +262,6 @@ module mur_new(){
     translate([fosse_l/2,0,0]) cube([1,fosse_lg,fosse2_mur_h]);
 }
 
-module vis_new(){
-    
-    translate([batiment_travee*1.5,0,-800*e]) rotate([0,-90+33, -5]) 
-        cylinder(r=150*e, 6000*e);
-}
 
 module trou(){
     union(){
@@ -221,8 +275,31 @@ module trou(){
     }
 }
 
+/*
+* paln 2
+*/
 
-i = 8;
+/*
+* new
+*/
+
+module fosse_new(){
+    fosse2();
+}
+
+module elevateur_new(){
+    if(elevateur100t){
+        translate([-700*e,-500*e,-elevateur2_prof])mirror([1,0,0])elevateur_20n(elevateur_h+elevateur2_prof);
+    } else {
+        translate([-700*e,-500*e,-elevateur2_prof])elevateur_14n(elevateur_h+elevateur2_prof);
+    }
+}
+
+module vis_new(){
+    translate([batiment_travee*1.5,0,-800*e]) rotate([0,-90+33, -5]) 
+        cylinder(r=150*e, 6000*e);
+}
+
 
 //plan1 = true;
 //plan2 = true;
@@ -235,7 +312,6 @@ translate([-batiment_travee, -4000*e, 0])camion();
 
 
 if(i == 0 || i == 10){
-    batiment();
     color("red") fosse();
     color("red") fosse_t();
     color("red") elevateur1();;
@@ -293,12 +369,12 @@ if(i > 6){
     color("grey") mur_new();
     color("green") elevateur_new();
     color("green") redler_new();
-    color("green") fosse2();
+    color("green") fosse_new();
     color("green") vis_new();
     color("green") tuyau_camion();
 }
 
-if(i == 8 || i == 10){
+if(i == 0 || i == 8 || i == 10){
     %batiment();
 }
 
@@ -318,16 +394,18 @@ translate([-batiment_travee*6, 2000*e,0]) cellule_pt();
 color("blue") translate([-batiment_travee*7, 0,0])fosse();
 color("blue") translate([-batiment_travee*7-1200*e,-500*e,0])  elevateur();
 color("blue") translate([-batiment_travee*7,00*e,redler_h])  redler(batiment_travee*6);
-color("blue") tuyau_camion2();
+color("blue") tuyau_camion_redler();
 
 color("blue") redler_bas();
 %galerie_bas();
 
 
+cellule_gd_t = (cellule_gd_r/e)*3.14*(cellule_gd_r/e)*(cellule_h/e)/1000000000*0.75;
+cellule_pt_t = (cellule_pt_r/e)*3.14*(cellule_pt_r/e)*(cellule_h/e)/1000000000*0.75;
 
-
-echo("grand cellule", (cellule_gd_r/e)*3.14*(cellule_gd_r/e)*(cellule_h/e)/1000000000*0.75, "t");
-echo("petite cellule", (cellule_pt_r/e)*3.14*(cellule_pt_r/e)*(cellule_h/e)/1000000000*0.75, "t");
+echo("grand cellule", cellule_gd_t, "t");
+echo("petite cellule", cellule_pt_t, "t");
+echo("4 petite cellule", cellule_pt_t*4, "t");
 
 echo("fosse1", (fosse_l/e)*(fosse_lg/e)*(fosse_h1/e)/1000000000*0.75+(fosse_l/e)*(fosse_lg/e)*(fosse_h2/e-fosse_h1/e)/3000000000*0.75, "t");
 
