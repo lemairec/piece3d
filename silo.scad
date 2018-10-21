@@ -4,6 +4,9 @@ $fa=$fa/4;
 echelle = 1/64;
 e = echelle;
 
+//hauteur camion 4m5
+//sogecis
+
 fosse_x = 300*echelle;
 fosse_l = 4000*echelle;
 fosse_lg = 4000*echelle;
@@ -39,6 +42,7 @@ trou_h = fosse2_h2+500*e;
     
 elevateur2_prof = fosse2_h2 + 1500*echelle;
 
+plan = 2;
 
 elevateur100t=true;
 i = 8;
@@ -68,14 +72,20 @@ module moi(){
 }
 
 module camion(){
+    benne(0);
+}
+
+module benne(angle){
     camion_l = 12000*e;
     camion_lg = 2500*e;
     camion_h = 4500*e;
     camion_h1 = 1000*e;
-    difference(){
-        translate([-camion_lg/2,0,camion_h1])  cube([camion_lg, camion_l, camion_h-camion_h1]);
-        translate([-camion_lg/2+1,1,camion_h1+1])  cube([camion_lg-2, camion_l-2, camion_h-camion_h1+1]);
+    
+    translate([0,0,camion_h1]) rotate([angle,0,0])difference(){
+        translate([-camion_lg/2,0,0])  cube([camion_lg, camion_l, camion_h-camion_h1]);
+        translate([-camion_lg/2+1,1,1])  cube([camion_lg-2, camion_l-2, camion_h-camion_h1+1]);
     }
+    translate([-camion_lg/2,0,camion_h1])  cube([camion_lg, camion_l, 1]);
     translate([-camion_lg/2,2000*e,500*e]) rotate([0,90,0]) cylinder(r=500*e, camion_lg);
     translate([-camion_lg/2,3000*e,500*e]) rotate([0,90,0]) cylinder(r=500*e, camion_lg);
     translate([-camion_lg/2,4000*e,500*e]) rotate([0,90,0]) cylinder(r=500*e, camion_lg);
@@ -199,14 +209,14 @@ module elevateur_20n(l){
 module fosse2bis(lg){
     difference(){
         hull(){
-            translate([-lg/2,0,-fosse2_h1]) cube([lg,lg,fosse_h1]);
+            translate([-lg/2,0,-fosse2_h1]) cube([lg,lg,fosse2_h1]);
             translate([0,0,-fosse2_h2]) cube([1,lg,1]);
         }
         translate([-lg/2,lg-1000*e,-fosse2_h2]) rotate([-45,0,0]) cube([100,100,100]);
     }
 }
 
-module fosse2(){
+module plan1_fosse(){
     difference(){
         fosse2bis(fosse_l);
         translate([0,1,1]) fosse2bis(fosse_l-2);
@@ -233,7 +243,7 @@ module tuyau_camion(){
 }
 
 
-module redler_new(){
+module plan1_redler(){
     redler_l = 4500*e;
     translate([-300*e/2,fosse_l-redler_l,-fosse2_h2-150*e]) cube([300*e,redler_l,300*e]);
 }
@@ -253,7 +263,7 @@ module support_fosse(){
 
 
 
-module mur_new(){
+module plan1_mur(){
     difference(){
         translate([-2000*e,-0,-trou_h]) cube([4000*e,100*e,trou_h + fosse2_mur_h]);
         translate([-2000*e,-1,-trou_h]) cube([800*e,110*e+2,1500*e]);
@@ -263,7 +273,7 @@ module mur_new(){
 }
 
 
-module trou(){
+module plan1_trou(){
     union(){
         translate([-fosse_l/2,0,-trou_h]) cube([fosse_lg,fosse_l,trou_h]);
         translate([-fosse_l/2,-1000*e,-elevateur2_prof]) cube([fosse_lg,1000*e,elevateur2_prof]);
@@ -276,28 +286,114 @@ module trou(){
 }
 
 /*
-* paln 2
+* plan_2
 */
+
+plan2_fosse_prof = 2500*e;
+
+module plan2_trou(){
+    union(){
+        hull(){
+            translate([-fosse_l/2,0,-1]) cube([fosse_lg,fosse_l,1]);
+            translate([0,fosse_l,-plan2_fosse_prof]) cube([1,1,1]);
+        }
+    }
+}
+
+module plan2_mur(){
+    for(i=[0,1]){
+        mirror([i,0,0])translate([-fosse_lg/2,0,0]) cube([100*e,fosse_l,1000*e]);
+    }
+        translate([-fosse_lg/2,0,0]) cube([fosse_l,100*e,1000*e]);
+
+}
+
+module plan2_fosse(){
+    difference(){
+        hull(){
+            translate([-fosse_l/2,0,-1]) cube([fosse_lg,fosse_l,1]);
+            translate([0,fosse_l,-plan2_fosse_prof]) cube([1,1,1]);
+        }
+        hull(){
+            translate([-fosse_l/2+50*e,50*e,1]) cube([fosse_lg-100*e,fosse_l-100*e,1]);
+            translate([0,fosse_l-50*e,-plan2_fosse_prof+50*e]) cube([1,1,1]);
+        }
+    }
+}
+
+module plan2_redler(){
+    translate([0,fosse_l-250*e,-plan2_fosse_prof+400*e]) rotate([45,0,0])cylinder(r=200*e, 6000*e);
+}
+
+module plan2_echo(){
+    mur = 4*4*1*0.75;
+    fosse = 4*4*plan2_fosse_prof/e/3000*0.75;
+    echo("plan2_fosse     ", mur+fosse, "t");
+    echo("plan2_elevateur ", elevateur_h/e/1000, "m");
+}
 
 /*
 * new
 */
 
-module fosse_new(){
-    fosse2();
+module new_fosse(){
+    if(plan == 1){
+        plan1_fosse();
+    } else {
+        plan2_fosse();
+    }
 }
 
-module elevateur_new(){
-    if(elevateur100t){
-        translate([-700*e,-500*e,-elevateur2_prof])mirror([1,0,0])elevateur_20n(elevateur_h+elevateur2_prof);
+module new_fosse_support(){
+    if(plan == 1){
+       support_fosse();
+    }
+}
+
+module new_mur(){
+    if(plan == 1){
+        plan1_mur();
     } else {
-        translate([-700*e,-500*e,-elevateur2_prof])elevateur_14n(elevateur_h+elevateur2_prof);
+        plan2_mur();
+    }
+}
+
+
+module new_elevateur(){
+    if(elevateur100t){
+        if(plan == 1){
+            translate([-700*e,-500*e,-elevateur2_prof])mirror([1,0,0])elevateur_20n(elevateur_h+elevateur2_prof);
+        } else {
+            translate([-700*e,-500*e,0])mirror([1,0,0])elevateur_20n(elevateur_h);
+        }
+    } else {
+        if(plan == 1){
+            translate([-700*e,-500*e,-elevateur2_prof])elevateur_14n(elevateur_h+elevateur2_prof);
+        } else {
+            translate([-700*e,-500*e,0])elevateur_14n(elevateur_h);
+        }
     }
 }
 
 module vis_new(){
     translate([batiment_travee*1.5,0,-800*e]) rotate([0,-90+33, -5]) 
         cylinder(r=150*e, 6000*e);
+}
+
+module new_trou(){
+    if(plan == 1){
+        plan1_trou();
+    } else {
+        plan2_trou();
+    }
+}
+
+module new_redler(){
+    if(plan == 1){
+        plan1_redler();
+    } else {
+        plan2_redler();
+    }
 }
 
 
@@ -309,6 +405,7 @@ module vis_new(){
 translate([-2500*e, 2000*e,0]) moi();
 
 translate([-batiment_travee, -4000*e, 0])camion();
+//translate([0, 3000*e, 0])benne(30);
 
 
 if(i == 0 || i == 10){
@@ -338,7 +435,7 @@ if(i == 2){
 }
 
 if(i == 3){
-    %trou();
+    %new_trou();
     
     %fosse();
     %fosse_t();
@@ -346,30 +443,30 @@ if(i == 3){
 }
 
 if(i == 4){
-    %trou();
+    %new_trou();
 }
 
 if(i == 5){
-    %trou();
-    color("black") support_fosse();
-    color("grey") mur_new();
+    %new_trou();
+    color("black") new_fosse_support();
+    color("grey") new_mur();
 }
 
 if(i == 6){
-    %trou();
-    color("black") support_fosse();
-    color("grey") mur_new();
-    color("green") elevateur_new();
-    color("green") redler_new();
+    %new_trou();
+    color("black") new_fosse_support();
+    color("grey") new_mur();
+    color("green") new_elevateur();
+    color("green") new_redler();
 }
 
 if(i > 6){
-    %trou();
-    color("black") support_fosse();
-    color("grey") mur_new();
-    color("green") elevateur_new();
-    color("green") redler_new();
-    color("green") fosse_new();
+    %new_trou();
+    color("black") new_fosse_support();
+    color("grey") new_mur();
+    color("green") new_elevateur();
+    color("green") new_redler();
+    color("green") new_fosse();
     color("green") vis_new();
     color("green") tuyau_camion();
 }
@@ -383,13 +480,13 @@ color("red") translate([-batiment_travee*4.5,-800*e,cellule_h+1000*e])
     
 translate([batiment_travee*1.5, 0,0]) cellule_gd1();
 
-translate([-batiment_travee*2, -2000*e,0]) cellule_pt();
-translate([-batiment_travee*2, 2000*e,0]) cellule_pt();
-translate([-batiment_travee*3, -2000*e,0]) cellule_pt();
-translate([-batiment_travee*3, 2000*e,0]) cellule_pt();
+translate([-batiment_travee*2, -cellule_pt_r,0]) cellule_pt();
+translate([-batiment_travee*2, cellule_pt_r,0]) cellule_pt();
+translate([-batiment_travee*3, -cellule_pt_r,0]) cellule_pt();
+translate([-batiment_travee*3, cellule_pt_r,0]) cellule_pt();
 translate([-batiment_travee*4.5, 0,0]) cellule_gd();
-translate([-batiment_travee*6, -2000*e,0]) cellule_pt();
-translate([-batiment_travee*6, 2000*e,0]) cellule_pt();
+translate([-batiment_travee*6, -cellule_pt_r,0]) cellule_pt();
+translate([-batiment_travee*6, cellule_pt_r,0]) cellule_pt();
 
 color("blue") translate([-batiment_travee*7, 0,0])fosse();
 color("blue") translate([-batiment_travee*7-1200*e,-500*e,0])  elevateur();
@@ -411,3 +508,4 @@ echo("fosse1", (fosse_l/e)*(fosse_lg/e)*(fosse_h1/e)/1000000000*0.75+(fosse_l/e)
 
 echo("fosse2", (fosse_l/e)*(fosse_lg/e)*(fosse2_h1/e)/1000000000*0.75+(fosse_l/e)*(fosse_lg/e)*(fosse2_h2/e-fosse_h1/e)/2000000000*0.75, "t");
 echo("elevateur", (elevateur2_prof/e+elevateur_h/e)/1000, "m");
+plan2_echo();
