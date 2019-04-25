@@ -461,11 +461,15 @@ vader_l = 4000*vader_echelle;
 vader_roue_d = 800*vader_echelle;
 vader_roue_lg = 180*vader_echelle;
 
-vader_roue_x = 3000*vader_echelle;
 
-vader_disque_d = 300*vader_echelle;
-vader_disque_x2 = 2300*vader_echelle;
-vader_disque_x1 = 2000*vader_echelle;
+vader_disque_d = 430*vader_echelle;
+vader_disque_x1 = 1000*vader_echelle;
+vader_disque_x2 = 1600*vader_echelle;
+
+vader_disque_x3 = 2600*vader_echelle;
+vader_disque_x4 = 3000*vader_echelle;
+
+vader_roue_x = 4000*vader_echelle;
 
 
 vader_h=5;
@@ -474,8 +478,20 @@ module vader_roue(){
     roue(vader_roue_d,vader_roue_lg, false);
 }
 
+module vader_roues(){
+    roue(vader_roue_d,vader_roue_lg, false);
+}
+
 module vader_disque(){
-    cylinder(1, r=vader_disque_d/2);
+    translate([0,0,-0.5]) cylinder(1, r=vader_disque_d/2);
+}
+
+module vader_disque_inc(i){
+    if(i){
+        translate([0,0,-0.5]) rotate([11,11,0])cylinder(1, r=vader_disque_d/2);
+    } else {
+        mirror([0,1,0])translate([0,0,-0.5]) rotate([11,11,0])cylinder(1, r=vader_disque_d/2);
+    }
 }
 
 module semoir_body(){
@@ -489,41 +505,59 @@ module semoir_body(){
         translate([-semoir_l/2,10,vader_h])cube([semoir_l, 2 ,2]);
     }
     
-    translate([-semoir_l/2,10,vader_h]) cube([2,22,2]);
-    translate([+semoir_l/2-2,10,vader_h]) cube([2,22,2]);
-    translate([-1,10,vader_h]) cube([2,22,2]);
+    translate([-semoir_l/2,10,vader_h]) cube([2,32,2]);
+    translate([+semoir_l/2-2,10,vader_h]) cube([2,32,2]);
+    translate([-1,10,vader_h]) cube([2,32,2]);
     
     #translate([-20,0,0]) cube([40,2,0.5]);
     
     //tremie
     hull(){
-        translate([-semoir_l/2,vader_disque_x1,vader_h])cube([semoir_l, 6 ,2]);
-        translate([0,vader_disque_x1-10,vader_h+20]) rotate([0,90,0]) cylinder(r=2, semoir_l, center = true);
-        translate([0,vader_disque_x1+15,vader_h+20]) rotate([0,90,0]) cylinder(r=2, semoir_l, center = true);
+        translate([-semoir_l/2,vader_disque_x3,vader_h])cube([semoir_l, 6 ,2]);
+        translate([0,vader_disque_x3-10,vader_h+20]) rotate([0,90,0]) cylinder(r=2, semoir_l, center = true);
+        translate([0,vader_disque_x3+15,vader_h+20]) rotate([0,90,0]) cylinder(r=2, semoir_l, center = true);
     }
     
    
-        
+    for(i = [-5:6]){
+        hull(){
+            translate([semoir_l/12*(i+0.25),vader_disque_x1-5,vader_disque_d])
+                cube([1,2,2]);
+            translate([semoir_l/12*(i-0.25),vader_disque_x1,vader_disque_d/2]) rotate([0,90,0]) vader_disque_inc(0);
+        }
+    }
+    for(i = [-6:5]){
+        hull(){
+            %translate([semoir_l/12*(i+0.25),vader_disque_x2-5,vader_disque_d])
+                cube([1,2,2]);
+            translate([semoir_l/12*(i+0.25),vader_disque_x2,vader_disque_d/2]) 
+                rotate([0,90,0]) vader_disque_inc(1);
+        }
+    }
+     
+    for(i = [-6:5]){
+        hull(){
+            translate([semoir_l/12*(i+0.25),vader_disque_x3,vader_disque_d/2]) 
+                rotate([0,90,0]) vader_disque();
+            translate([semoir_l/12*(i+0.25),vader_disque_x3,vader_disque_d])
+                cube([1,vader_disque_d,2]);
+        }
+    }
+    
+    for(i = [-5:6]){
+        hull(){
+            translate([semoir_l/12*(i-0.25),vader_disque_x4,vader_disque_d/2]) rotate([0,90,0]) vader_disque();
+            translate([semoir_l/12*(i-0.25),vader_disque_x3,vader_disque_d])
+                cube([1,vader_disque_d,2]);
+        }
+    }
+    
+    
+    
     for(i = [-6:5]){
          translate([semoir_l/12*(i+0.5),vader_roue_x,roue_semoir/2]) rotate([0,90,0]) vader_roue();
     }
-    
-    for(i = [-6:5]){
-        hull(){
-            translate([semoir_l/12*(i+0.5),vader_disque_x1,vader_disque_d/2]) 
-                rotate([0,90,0]) vader_disque();
-            translate([semoir_l/12*(i+0.5),vader_disque_x1,vader_disque_d])
-                cube([1,vader_disque_d,2]);
-        }
-    }
-    
-    for(i = [-5:5]){
-        hull(){
-            translate([semoir_l/12*(i),vader_disque_x2,vader_disque_d/2]) rotate([0,90,0]) vader_disque();
-            translate([semoir_l/12*(i),vader_disque_x1,vader_disque_d])
-                cube([1,vader_disque_d,2]);
-        }
-    }
+   
    
     
 }
@@ -753,7 +787,7 @@ module moissoneuse(mode){
 }
 
 //translate([-20,0,0])bonhomme();
-//tractor(0);
+tractor(0);
 //dechaumeur(0);
 //cover_crop(0);
 vader(0);

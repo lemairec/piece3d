@@ -3,18 +3,18 @@
 //translate([-100,59,0])  rotate([90,0,0]) import("component/screen_fond.stl");
 
 screen_l = 193;
-screen_lg = 112;
-screen_r = 6;
+screen_lg = 111;
+screen_r = 7;
 
-trou_l = 125;
-trou_lg = 66;
-d_e1 = 3;
-d_e2 = -1.5;
+trou_l = 126;
+trou_lg = 65;
+d_e1 = 2;
+d_e2 = 1;
 screen_vis = [[trou_l/2+d_e1, trou_lg/2+d_e2], [trou_l/2+d_e1, -trou_lg/2+d_e2]
     , [-trou_l/2+d_e1, trou_lg/2+d_e2], [-trou_l/2+d_e1, -trou_lg/2+d_e2]];
 
-boitier_l = 200;
-boitier_lg = 140;
+boitier_l = 197;
+boitier_lg = 135;
 boitier_y = -boitier_lg/2-10;
 
 boitier_h = 40;
@@ -49,7 +49,7 @@ module screen(){
     screen_y = 66;
     
     screen_l_cube = 175;
-    screen_lg_cube = 108;
+    screen_lg_cube = 107;
     
     union(){
         hull(){
@@ -59,7 +59,7 @@ module screen(){
                 }
             }
         }
-        translate([-screen_l_cube/2,-screen_lg_cube/2,0]) cube([screen_l_cube,screen_lg_cube, 10]);
+        translate([-screen_l_cube/2,-screen_lg_cube/2,0]) cube([screen_l_cube,screen_lg_cube, 8.5]);
         translate([-screen_l_cube/2-7,-screen_lg_cube/2,0]) cube([screen_l_cube,screen_lg_cube, 3]);
     
         screen_int();
@@ -72,7 +72,7 @@ module boitier(h){
         hull(){
             for(i=[-1,1]){
                 for(j=[-1,1]){
-                    translate([i*(boitier_l/2-r), j*(boitier_lg/2-r), 0]) cylinder(r=5, h);
+                    translate([i*(boitier_l/2-r), j*(boitier_lg/2-r), 0]) cylinder(r=r, h);
                 }
             }
         }
@@ -91,7 +91,7 @@ module boitier(h){
 
 
 module screen_fond(){
-    e = 11;
+    e = 9.5;
     l = 200;
     lg = 150;
     difference(){
@@ -100,12 +100,46 @@ module screen_fond(){
     }
 }
 
-
 module screen_up(){
-    e = 3;
+    e = 1.5;
     r = 6;
    difference(){
         mirror([0,1,0])boitier(boitier_h);
+        translate([0,0,e+0.1]) rotate([180,0,0]) screen_int();
+        hull(){
+            for(i=[-1,1]){
+                for(j=[-1,1]){
+                    translate([i*(boitier_l/2-15), -(boitier_lg/2-r-e), e]) cylinder(r=5, boitier_h+2);
+                    translate([i*(boitier_l/2-15), (boitier_lg/2-r-e-10), e]) cylinder(r=5, boitier_h+2);
+                }
+            }
+        }
+        
+        for(i=[-2:2]){
+            hull(){
+                translate([0,i*10,10]) rotate([0,90,0])cylinder(r=3, 1000, center = true);
+                translate([0,i*10,boitier_h-10]) rotate([0,90,0])cylinder(r=3, 1000, center = true);
+            }
+        }
+        
+         for(i=[-1,1]){
+            hull(){
+                translate([i*35,0,boitier_h/2]) rotate([-90,0,0])cylinder(r=4.5, 1000);
+                
+            }
+        }
+    }
+    
+    
+}
+
+module screen_up2(){
+    e = 3;
+    r = 6;
+    difference(){
+        mirror([0,1,0])boitier(boitier_h);
+
+        screen_int();
         translate([0,-x,e+0.1]) mirror([0,0,1])screen_int();
         hull(){
             for(i=[-1,1]){
@@ -119,7 +153,7 @@ module screen_up(){
             translate([i*50, boitier_lg/2-10, boitier_h/2+e/2])  rotate([90,0,0])cylinder(r=vis_r2, 50, center = true);
         }
         translate([0,0, boitier_h/2+e/2])  rotate([0,90,0])cylinder(r=vis_r2, boitier_l+10, center = true);
-        
+
         translate([0, boitier_lg/2-10, boitier_h/2+e/2]) cube([25, 50, 3], center = true);
         translate([-25/2, boitier_lg/2-4, boitier_h/2+e/2]) cube([25, 4, boitier_h]);
     }
@@ -166,7 +200,6 @@ module support_camera1(){
         }
                 
     }
-    
 }
 
 module support_camera2(){
@@ -200,7 +233,53 @@ module support_camera2(){
     
 }
 
-mode = 2;
+
+module support_camera3(){
+    r1 = 15;
+    r2 = 10;
+    h = 15+6;
+    difference(){
+        union(){
+            hull(){
+                translate([-35,0])rotate([0,0,0])cylinder(r=8,4);
+                translate([35,0])rotate([0,0,0])cylinder(r=8,4);
+                translate([-r1,-r1,0])cube([r1*2,r1*2,6]);
+                
+                //translate([-r1,-r1,0])cube([r1*2,r1*2,r1*2]);
+            }
+            hull(){
+                translate([-r1,-r1,0])cube([r1*2,r1*2,6]);
+                translate([0,0,h])rotate([0,90,0])cylinder(r=8,2*r1, center = true);
+            }
+        }
+        translate([0,0,h])rotate([0,90,0])cylinder(r=4.2,3*r1, center = true);   
+        translate([-r2,-r1,6])cube([r2*2,r1*2,60]);
+        translate([35,0])rotate([0,0,0])cylinder(r=4,40);
+        translate([-35,0])rotate([0,0,0])cylinder(r=4,40);
+            
+    }
+}
+
+module support_camera32(){
+    e=3;
+    l=38;
+    l3=20;
+    l2=18;
+    r = 4;
+    
+    dz_rond = 12;
+    r1 = 10;
+    difference(){
+        union(){
+            rotate([-90,0,0])cylinder(r=10,100);
+            translate([-r1/2,0,-10])cube([r1,100,2]);  
+            translate([-r1,-r1,-r1])cube([20,20,20]);    
+        }
+        rotate([0,90,0])cylinder(r=4.2,100, center=true); 
+    }
+}
+
+mode = 1;
 if(mode==0){
     //translate([0, -x, -10.2])screen();
     //rotate([0,0,180]) translate([100,-70-x,10]) color("blue") import("component/pi_model_v4.stl");
@@ -208,9 +287,9 @@ if(mode==0){
     
     translate([0,0,0.2])screen_up();
     rotate([0,180,180])screen_fond();
-    translate([0,-y_camera,boitier_h])support_camera1();
     
-    translate([0,-y_camera,z_rond+boitier_h]) rotate([-90,180,180]) translate([0,0,-z_rond]) support_camera2();
+    translate([0,-y_camera+10,boitier_h/2]) rotate([-90,0,0]) support_camera3();
+    translate([0,-y_camera+30,boitier_h/2]) support_camera32();
 } else if(mode==1){
     screen_up();
 } else if(mode==2){
