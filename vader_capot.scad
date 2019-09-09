@@ -12,7 +12,7 @@ y2 = 100;
 angle = atan((x1-x2)/y2);
 angle2 = atan(x2/y2);
 
-echo(angle3);
+//echo(angle3);
 echo(angle2);
 
 droite_h = 2.8;
@@ -104,7 +104,13 @@ difference(){
 }
 
 e_support = 0.3;
-translate([-lg/2-5, -5,0]) cube([lg+10,10,e_support]);
+hull(){
+    for(i=[0,1]){
+        for(j=[0,1]){
+            mirror([i,0])  mirror([0,j]) translate([-lg/2-5, -5,0]) cylinder(r=5, e_support);
+        }
+    }
+}
 
 translate([-lg/2-2.5, -5,0]) cube([e_support, 10,15]);
 translate([lg/2+1.5, -5,0]) cube([e_support, 9,32]);
