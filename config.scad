@@ -29,9 +29,10 @@ m3_nut_d = 7;
 m3_nut_d2 = 6.2;
 m3_nut_h = 3;
 
-m4_nut_d = 8;
-m4_nut_d2 = 7;
-m4_nut_h = 4;
+m4_r = 2.3;
+m4_nut_d = 8.4;
+m4_nut_d2 = 7.5;
+m4_nut_h = 3.5;
 
 608_r = 23/2;
 608_h = 8;
@@ -87,10 +88,6 @@ module m3_nut(h){
     translate([0, -m3_nut_d2/2, 0]) cube([h, m3_nut_d2, m3_nut_h]);
 }
 
-m4_r = 2.3;
-m4_nut_d = 8.4;
-m4_nut_d2 = 7.5;
-m4_nut_h = 3.5;
 module m4(h, nut = false, head = false){
     cylinder(h, m4_r, m4_r);
     if(nut){

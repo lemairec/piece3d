@@ -230,4 +230,4 @@ module test(){
     translate([0,0,-1])cylinder(r = canelure_body_int_d/2, canelure_body_h+2);
     traceur();
 }*/
-piece2(true);
+piece(true);

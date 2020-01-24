@@ -318,20 +318,7 @@ module support_camera2(){
 }
 
 nb_cran = 24;
-module sphere_cran(r, h , h2, nb_cran){
-    angle = 360/nb_cran;
-    for(i=[0:nb_cran]){
-        rotate([0,0,i*angle])hull(){
-            difference(){
-                cylinder(r=r, h2);
-                translate([-r,0,-1])cube([2*r,r,r]);
-                rotate([0,0,180-angle]) translate([-r,0,-1])cube([2*r,r,r]);
-            }
-            translate([0,0,h]) rotate([0,90,-angle/2]) cylinder(r=0.1, h = r);
-        } 
-    }
-    
-}
+
 module support_ecran1(){
     r1 = 17;
     r2 = 12;
@@ -390,7 +377,7 @@ module support_ecran2(){
     }
 }
 
-mode = 2;
+mode = 7;
 if(mode==0){
     //translate([0, -x, -10.2])screen();
     //rotate([0,0,180]) translate([100,-70-x,10]) color("blue") import("component/pi_model_v4.stl");
@@ -411,9 +398,11 @@ if(mode==0){
     screen_fond();
 } else if(mode==4){
     support_ecran1();
-    //support_camera1();
 } else if(mode==5){
     support_ecran2();
-    //support_camera2();
+} else if(mode==6){
+    support_camera1();
+} else if(mode==7){
+    support_camera2();
 }
 
