@@ -126,11 +126,11 @@ module demi_glissiere(r, l, h){
 
 module nema17_2d(){
     nema17_l = 43;
-    nema17_h = 6;
+    nema17_h = 3;
     polygon([[0,nema17_h], [nema17_h,0]
             , [nema17_l-nema17_h,0],[nema17_l,nema17_h]
             , [nema17_l,nema17_l-nema17_h],[nema17_l-nema17_h,nema17_l]
-            , [8,nema17_l],[0,nema17_l-nema17_h] ]);
+            , [nema17_h,nema17_l],[0,nema17_l-nema17_h] ]);
 }
 
 module nema17_2d2(){
@@ -160,6 +160,7 @@ module corner(l_corner, h_corner, lg_corner){
     translate([0, lg_corner, 0]) rotate([90, 0, 0]) linear_extrude(lg_corner) polygon([[0,0], [l_corner, 0], [0, h_corner]]);
 }
 
+nema17();
 
 /**
  * 2D

@@ -43,7 +43,7 @@ pas2=8;
 pas3=10;
 pas4=12;
                
-lg=n*(4+6+8+10+12)+2*e;
+lg=n*(pas0+pas1+pas2+pas3+pas4)+2*e;
 e_h = 3;
 
 module toto3(){
@@ -59,7 +59,7 @@ module toto3(){
        union(){
            cube([lg-2*e,10,2*h]);
            for(i= [0 : n-1] ){
-               translate([(i+0.5)*pas0,pas0/2-3,0])            cylinder(r=pas0/2+0.5,2*h);
+               translate([(i+0.5)*pas0,pas0/2-3.5,0])            cylinder(r=pas0/2+0.5,2*h);
                
                translate([(pas0)*n+(i+0.5)*pas1,pas1/2-4,0]) cylinder(r=pas1/2+0.5,2*h);
            
