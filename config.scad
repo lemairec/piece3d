@@ -88,6 +88,10 @@ module m3_nut(h){
     translate([0, -m3_nut_d2/2, 0]) cube([h, m3_nut_d2, m3_nut_h]);
 }
 
+module m3_nut2(h){
+    cylinder(h, r = m3_nut_d/2, $fn = 6);
+}
+
 module m4(h, nut = false, head = false){
     cylinder(h, m4_r, m4_r);
     if(nut){
