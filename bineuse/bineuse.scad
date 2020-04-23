@@ -377,7 +377,26 @@ module support_ecran2(){
     }
 }
 
-mode = 7;
+module support_cabine(){
+    x = 30;
+    r2=26/2;
+    r=r2+5;
+    difference(){
+        union(){
+            translate([-40,-r,0])cube([80, 2*r, 10]);
+            hull(){
+                translate([-20,-r,0])cube([40, 2*r, 10]);
+                translate([-20,0, x])rotate([0,90,0]) cylinder(r=r,40);
+            }
+        }
+        translate([-30,0,x])rotate([0,90,0]) cylinder(r=r2,60);
+        
+        translate([-35,0,-1])cylinder(r=4,60);
+        translate([35,0,-1])cylinder(r=4,60);
+    }
+}
+
+mode = 8;
 if(mode==0){
     //translate([0, -x, -10.2])screen();
     //rotate([0,0,180]) translate([100,-70-x,10]) color("blue") import("component/pi_model_v4.stl");
@@ -404,5 +423,7 @@ if(mode==0){
     support_camera1();
 } else if(mode==7){
     support_camera2();
+} else if(mode==8){
+    support_cabine();
 }
 

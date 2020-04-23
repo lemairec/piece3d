@@ -11,9 +11,9 @@ e = 3;
 
 
 //5120
-lg_int = 46;
+lg_int = 47;
 h_int = 4;
-angle = 1;
+angle = 0.1;
 
 //same
 if(false){
@@ -54,10 +54,8 @@ module couronne(){
             }
         }
         
-        hull(){
-            rotate([0,0,180-angle]) translate([0,0,-1]) cube([1,200,100]);
-            rotate([0,0,180+angle]) translate([0,0,-1]) cube([1,200,100]);
-        }
+        rotate([0.1,0,119.5]) translate([0,0,-1]) cube([0.5,200,100]);
+        
         
     }
 
@@ -205,7 +203,7 @@ module support_capteur2(){
      
 }
 
-mode=6;
+mode=1;
 
 if(mode==0){
     couronne();
@@ -214,7 +212,7 @@ if(mode==0){
     }
     translate([120,0,0]) pignon();
 } else if(mode==1){
-   couronne();
+   support_coronne();
 } else if(mode==2){
    pignon();
 } else if(mode==3){
