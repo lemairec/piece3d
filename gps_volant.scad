@@ -1,10 +1,12 @@
 use <config.scad>
 use <libs/gears.scad>
 
+$fs=$fs/2;
+$fa=$fa/2;
+
 n=3;
 d = 150;
 d2 =152;
-a = 20;
 
 
 e = 3;
@@ -12,8 +14,9 @@ e = 3;
 
 //5120
 lg_int = 47;
-h_int = 4;
-angle = 0.1;
+h_int = 6;
+a = 25;
+colonne_d=56;
 
 //same
 if(false){
@@ -50,7 +53,7 @@ module couronne(){
         
             for(j=[-1,1]){
             rotate([0,0,i*360/n])translate([j*l/2,d2/2,-1]) rotate([a,0,0]) m3(200);
-            rotate([0,0,i*360/n])translate([j*l/2,d2/2,-1]) rotate([a,0,0]) m3_nut2(4);
+            rotate([0,0,i*360/n])translate([j*l/2,d2/2,-1]) rotate([a,0,0]) m3_nut2(8);
             }
         }
         
@@ -67,9 +70,14 @@ module couronne(){
 
 module support_coronne(){
     difference(){
-        hull(){
-            translate([-l/2,0,0]) cylinder(r=5,e);
-            translate([ l/2,0,0]) cylinder(r=5,e);
+        union(){
+            hull(){
+                translate([-l/2,0,0]) cylinder(r=5,e);
+                translate([ l/2,0,0]) cylinder(r=5,e);
+            }
+            for(i =[0,1]){
+                mirror([i,0,0])translate([-2*l/6,-5,0]) cube([4,10,e+2]);
+            }
         }
         translate([-l/2,0,-1]) cylinder(r=2,10);
         translate([ l/2,0,-1]) cylinder(r=2,10);
@@ -203,25 +211,102 @@ module support_capteur2(){
      
 }
 
-mode=1;
+x_vis = 80;
+    
+module support_colonne(){
+    e = 30;
+    r  = colonne_d/2+5;
+    l = 100;
+    lg= 50;
+    
+    difference(){
+        union(){
+            cylinder(r=r, e);
+            translate([-l/2, -10, 0])cube([l, lg, e]);
+        }
+        translate([0, 0, -1]) cylinder(r=colonne_d/2, e+2);
+        cube([100, 1, 100], center = true);
+        
+        for(i=[-1,1]){
+            translate([i*x_vis/2, -15, e/2]) rotate([-90,0,0]) m8(100, true);
+        }
+        
+    }
+    
+}
+
+module moteur2(){
+    translate([0,0,-70])cylinder(r=37/2, 70);
+    for(i=[0, 60, 120, 180, 240, 300]){
+         rotate([0,0,i]) translate([31/2, 0,0]) cylinder(r=3/2, 5);
+    }
+    translate([0, 7,0]) cylinder(r=13/2, 5);
+    translate([0, 7,0]) cylinder(r=6/2, 10);
+}
+
+module support_moteur2(){
+    l = 100;
+    lg = 44;
+    h=100;
+    
+    difference(){
+        
+        union(){
+            translate([-l/2,-lg/2,0]) cube([l, lg, 3]);
+            translate([-l/2,-lg/2,-h]) cube([l, 3, h]);
+            for(i=[0,1]){
+                mirror([i,0, 0]) hull(){
+                    translate([-l/2,-lg/2,0]) cube([3, lg, 3]);
+                    translate([-l/2,-lg/2,-h]) cube([3, 3, h]);
+                }
+            }
+        }
+        
+        
+        for(i=[0,1]){
+            mirror([i,0, 0]) translate([x_vis/2,0,-h+10]) hull(){
+                rotate([90,0,0])cylinder(r=4, 100);
+                translate([0,0,30])rotate([90,0,0])cylinder(r=4, 100);
+            }
+        }
+        rotate([0,0,180])moteur2();
+    }
+   
+    
+    %rotate([0,0,180])moteur2();
+    
+}
+
+mode=3;
+
+
+
 
 if(mode==0){
     couronne();
     for(i=[0:n]){
         rotate([0,0,i*360/n]) translate([0,d2/2,-1]) rotate([a,0,0]) translate([0,0,h2+2])          support_coronne();
     }
-    translate([120,0,0]) pignon();
+    translate([0,112,5]) rotate([-180,0,8]) pignon();
+    
+    translate([0,105,-25])support_moteur2();
+    
+    translate([0,0,-100])support_colonne();
 } else if(mode==1){
-   support_coronne();
+   couronne();
 } else if(mode==2){
-   pignon();
+   support_coronne();
 } else if(mode==3){
-   support_moteur();
+   pignon();
 } else if(mode==4){
-   support_volant();
+   rotate([180,0, 0])support_moteur2();
 } else if(mode==5){
-   support_capteur1();
+    //support_volant();
+    support_colonne();
+    //moteur2();
 } else if(mode==6){
+   support_capteur1();
+} else if(mode==7){
    support_capteur2();
 }
 
