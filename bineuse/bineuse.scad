@@ -1,5 +1,7 @@
 use <../config.scad>
 
+$fs=$fs/2;
+$fa=$fa/2;
 
 //translate([100,-70+x,0]) import("component/pi_model_v4.stl");
 //translate([-100,59,0])  rotate([90,0,0]) import("component/screen_fond.stl");
@@ -377,10 +379,11 @@ module support_ecran2(){
     }
 }
 
-module support_cabine(){
+module support_cabine_ih(){
     x = 30;
     r2=26/2;
     r=r2+5;
+    e_2 = 60;
     difference(){
         union(){
             translate([-40,-r,0])cube([80, 2*r, 10]);
@@ -391,9 +394,15 @@ module support_cabine(){
         }
         translate([-30,0,x])rotate([0,90,0]) cylinder(r=r2,60);
         
-        translate([-35,0,-1])cylinder(r=4,60);
-        translate([35,0,-1])cylinder(r=4,60);
+        translate([-e_2/2,0,-1])cylinder(r=4,60);
+        translate([e_2/2,0,-1])cylinder(r=4,60);
+        cube([32, 100, 6], center=true);
     }
+    
+    for(i=[-12, -6 ,0, 6, 12]){
+        translate([i,-r, 0]) cube([0.2, 2*r, 10]);
+    }
+    translate([-20,-r, 0]) cube([40, 2*r, 0.2]);
 }
 
 mode = 8;
@@ -424,6 +433,6 @@ if(mode==0){
 } else if(mode==7){
     support_camera2();
 } else if(mode==8){
-    support_cabine();
+    support_cabine_ih();
 }
 

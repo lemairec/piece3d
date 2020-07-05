@@ -1,7 +1,8 @@
 use <config.scad>
 
-$fs=$fs/2;
-$fa=$fa/2;
+$fa = 6;
+$fs = 1;
+
 
 r_cylindeur = 60;
 l_cylindeur =200;
@@ -11,41 +12,17 @@ trou1_nb = 48;
 trou1_h=trou1_r*3;
 
 trou2_r = 2;
-trou2_nb = 48;
-trou2_h=trou2_r*3;
+trou2_nb = 90;
+trou2_h=trou2_r*2.5;
 
 trou3_r = 3;
 trou3_nb = 18;
 trou3_h=trou3_r*3;
 
-module tamie(){
-    difference(){
-        cylinder(l_cylindeur, r=r_cylindeur);
-        translate([0,0,-1]) cylinder(l_cylindeur+2, r=r_cylindeur-e1);
-        
-        /*for(j=[1:l_cylindeur/3/trou1_h]){
-            for(i=[0:nb_trou1]){
-                translate([0,0,j*trou1_h]) rotate([90,0,i*360/nb_trou1])cylinder(l_cylindeur, r=2);
-            }
-        }
-        for(j=[1:l_cylindeur/3/trou2_h]){
-            for(i=[0:nb_trou2]){
-                translate([0,0,l_cylindeur/3 + j*trou2_h]) rotate([90,0,i*360/nb_trou2])cylinder(l_cylindeur, r=trou2_r);
-            }
-        }
-        for(j=[1:l_cylindeur/3/trou3_h-1]){
-            for(i=[0:nb_trou3]){
-                translate([0,0,2*l_cylindeur/3 + j*trou3_h]) rotate([90,0,i*360/nb_trou3])cylinder(l_cylindeur, r=trou3_r);
-            }
-        }*/
-    }
-    
-}
 
-tamie2_r = 60;
-tamie2_l = 60;
+tamie2_r = 80;
+tamie2_l = 180;
 tamie2_e = 1;
-nb = 6;
 
 e2=12;
 e1=10;
@@ -108,7 +85,8 @@ module support_tamie(){
 }
 
 module tamie(trou_r, nb_trou, trou_h){
-    r = tamie2_r-0.5;
+    echo(nb_trou);
+    r = tamie2_r-0.2;
     difference(){
         cylinder(tamie2_l, r=r);
         translate([0,0,-1]) cylinder(tamie2_l+2, r=r-0.8);
@@ -116,7 +94,7 @@ module tamie(trou_r, nb_trou, trou_h){
         for(j=[1:(tamie2_l)/trou_h-1]){
             translate([0,0,j*trou_h]){
                 for(i=[0:nb_trou/2]){
-                    rotate([90,0,i*360/nb_trou])cylinder(l_cylindeur, r=trou_r, center = true);
+                    rotate([90,0,(i+j/2)*360/nb_trou])cylinder(l_cylindeur, r=trou_r, center = true, $fn=8);
                 }
             }
         }
@@ -151,6 +129,10 @@ module support(){
 
 //support();
 
+module tamie_standart(r){
+   tamie(r, round(3.14*tamie2_r/r/1.5/2)*2, r*2.5); 
+}
+
+tamie_standart(1);
 //translate([0,0,0])tamie(trou2_r, trou2_nb, trou2_h);
-tamie(trou2_r, trou2_nb, trou2_h);
 //translate([0,0,-tamie2_l])tamie2(trou1_r, trou1_nb, trou1_h);

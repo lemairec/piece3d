@@ -76,19 +76,19 @@ module support_tamie4(){
 }
 
 
-e_bis = 4;
+e_bis = 5;
 
-translate([-3*e_bis,0,0])rotate([0,90,0]) rotate([0,0,360/nb_trou]) linear_extrude(e)support_tamie1();
-translate([-2*e_bis,0,0])rotate([0,90,0])linear_extrude(e)support_tamie2();
-translate([-e,0,0])rotate([0,90,0])linear_extrude(e)support_tamie3();
-translate([e_bis,0,0])rotate([0,90,0])linear_extrude(e)support_tamie2();
-translate([2*e_bis,0,0])rotate([0,90,0])linear_extrude(e)support_tamie1();
+translate([-2.5*e_bis,0,0])rotate([0,90,0]) rotate([0,0,360/nb_trou]) linear_extrude(e)support_tamie1();
+translate([-1.5*e_bis,0,0])rotate([0,90,0])linear_extrude(e)support_tamie2();
+translate([-0.5*e_bis,0,0])rotate([0,90,0])linear_extrude(e)support_tamie3();
+translate([0.5*e_bis,0,0])rotate([0,90,0])linear_extrude(e)support_tamie2();
+translate([1.5*e_bis,0,0])rotate([0,90,0])linear_extrude(e)support_tamie1();
 
 for(i=[0:nb_trou2]){
-    rotate([i*360/nb_trou2],0,0)translate([l_cylindeur/2+3*e, r_cylindeur+support_e1/2,-e/2]) linear_extrude(e)support_tamie4();
+    rotate([i*360/nb_trou2],0,0)translate([l_cylindeur/2+2.5*e_bis, r_cylindeur+support_e1/2,-e/2]) linear_extrude(e)support_tamie4();
 }
 
-l=l_cylindeur+3*e;
+l=l_cylindeur+2.5*e_bis;
 translate([l,0,0])rotate([0,90,0])linear_extrude(e)support_tamie1();
 translate([l+e_bis,0,0])rotate([0,90,0])linear_extrude(e)support_tamie2();
 translate([l+2*e_bis,0,0])rotate([0,90,0])linear_extrude(e)support_tamie3();

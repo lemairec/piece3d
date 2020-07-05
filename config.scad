@@ -92,11 +92,20 @@ module m3_nut2(h){
     cylinder(h, r = m3_nut_d/2, $fn = 6);
 }
 
+module m4_nut(h){
+    cylinder(m4_nut_h, r = m4_nut_d/2, $fn = 6);
+    translate([0, -m4_nut_d2/2, 0]) cube([h, m4_nut_d2, m4_nut_h]);
+}
+
 module m4(h, nut = false, head = false){
     cylinder(h, m4_r, m4_r);
     if(nut){
         cylinder(m4_nut_h, r = m4_nut_d/2, $fn = 6);
     }
+}
+
+module m4_nut2(h){
+    cylinder(h, r = m4_nut_d/2, $fn = 6);
 }
 
 module m5(h, nut = false, head = false){
@@ -163,8 +172,6 @@ module nema17(){
 module corner(l_corner, h_corner, lg_corner){
     translate([0, lg_corner, 0]) rotate([90, 0, 0]) linear_extrude(lg_corner) polygon([[0,0], [l_corner, 0], [0, h_corner]]);
 }
-
-nema17();
 
 /**
  * 2D
