@@ -170,7 +170,21 @@ module support_couronne_same2(){
         }
         translate([-l_same/2,0,-1])  m4(200);
         translate([ l_same/2,0,-1])  m4(200);
-        translate([-lg_same_int/2,-20,4]) rotate([-a,0,0])cube([lg_same_int, 100, h_same_int+1]);
+        translate([0,-12,4]) rotate([a,0,0])cube([lg_same_int, 100, h_same_int+1], center = true);
+    }
+}
+
+module support_couronne_same3(){
+    l_support = 20;
+    difference(){
+        union(){
+            hull(){
+                translate([-l_support/2,0,0]) cylinder(r=6,e_support);
+                translate([ l_support/2,0,0]) cylinder(r=6,e_support);
+            }
+        }
+        translate([-l_support/2,0,-1])  m4(200);
+        translate([ l_support/2,0,-1])  m4(200);
     }
 }
 
@@ -181,16 +195,17 @@ module couronne(mode2){
         if(mode2 == 0){
             couronne_same();
             for(i=[0:n]){
-                rotate([0,0,i*360/n]) translate([0,d2/2,-1]) translate([0,0,h2+2]) support_couronne_same2();
+                rotate([0,0,i*360/n]) translate([0,d2/2,-1]) translate([0,0,h2+2])  rotate([0,0,180])support_couronne_same2();
             }
+            rotate([0,0,360*3/6]) translate([0,d2/2,-1]) translate([0,0,h2+4])  rotate([0,0,180])support_couronne_same3();
         } else if(mode2 == 1){
             couronne_same();
         } else if(mode2 == 2){
             translate([0, 00, 6]) rotate([90,0,0]) support_couronne_same2();
             translate([0, 40, 6]) rotate([90,0,0]) support_couronne_same2();
             translate([0, 80, 6]) rotate([90,0,0]) support_couronne_same2();
-            translate([0, 90, 0]) support_couronne_same();
-            
+            translate([0, 90, 0]) support_couronne_same3();
+            translate([0, 110, 0]) support_couronne_same3();
         }
     } else {
         if(mode2 == 1){
@@ -255,71 +270,7 @@ module support_volant(){
     translate([0,5, 20])cube([10,0.2,22]);
 }
 
-capteur1_h = 50;
-capteur1_lg = 50;
-module support_capteur1(){
-    difference(){
-        union(){
-            translate([-capteur1_lg/2,-30,0])cube([capteur1_lg,80,e]);
-            translate([-capteur1_lg/2,0,0])cube([capteur1_lg,e,capteur1_h]);
-            
-            for(i=[0,1]){
-                mirror([i,0,0])translate([-capteur1_lg/2,0,0])hull(){
-                    translate([0,-30,0]) cube([e,30,e]);
-                    translate([0,0,0])cube([e,e,40]);
-                }
-            }
-            
-        }
-        translate([-30/2,-15, -1])cylinder(r=2.2, 200);
-        translate([ 30/2,-15, -1])cylinder(r=2.2, 200);
-        
-        translate([    0,-15, -1])cylinder(r=9, 200);
-        
-        
-         for(i=[0,1]){
-                mirror([i,0,0])translate([-22,-2, -1])cube([6,2,22]);
-         }
-        
-        
-    }
-}
 
-capteur2_lg = 30;
-capteur2_h=40;
-capteur2_l1 = 40;
-capteur2_l2 = 20;
-
-capteur2_e = 2;
-module support_capteur2(){
-    difference(){
-        union(){
-            translate([-capteur2_lg/2-e,0,0])cube([capteur2_lg+2*e,capteur2_l1,capteur2_h]);
-            
-            translate([-10,-capteur2_l2-e,0])cube([20,capteur2_l2+e,capteur2_h]);
-        }
-        translate([-capteur2_lg/2,e,-1])cube([capteur2_lg,capteur2_l1,capteur2_h+2]);
-        
-        
-     for(i=[0,1]){
-         for(j=[0,1]){
-             translate([0,-capteur2_l2/2,capteur2_h/2])
-                mirror([j,0,0]) mirror([0,0,i]) hull(){
-                    translate([0,-capteur2_l2/2,-0.1])
-                        cube([210, capteur2_l2, capteur2_e]); 
-                    translate([0,-capteur2_l2/2,-0.1])rotate([0,-50,0])
-                        cube([210, capteur2_l2, capteur2_e]);    
-                    
-                }
-        }
-     }
-     
-        
-        
-    }
-    translate([-0.1,-capteur2_l2-e,0])cube([0.2,capteur2_l2+e,capteur2_h]);
-     
-}
 
 x_vis = 80;
     
@@ -346,9 +297,9 @@ module support_colonne(){
 }
 
 
-
+r_moteur = 37/2;
 module moteur2(){
-    translate([0,0,-70])cylinder(r=37/2, 70);
+    translate([0,0,-70])cylinder(r=r_moteur, 70);
     for(i=[0, 60, 120, 180, 240, 300]){
          rotate([0,0,i]) translate([31/2, 0,0]) cylinder(r=3/2, 5);
     }
@@ -356,47 +307,134 @@ module moteur2(){
     translate([0, 7,0]) cylinder(r=6/2, 10);
 }
 
+/*module support_moteur2_bis(){
+    difference(){
+        
+        translate([-50,0,0])cube([100,30,30]);
+        
+        translate([-40,10,-1])m8(200);
+        translate([ 40,10,-1])m8(200);
+    }
+}
+
 module support_moteur2(x_vis = 80){
-    l = x_vis+20;
+    l = 90;
     lg = 44;
-    h=100;
+    h=120;
+    
+    h_vis = 40;
+    
+    e2 =20;
+    e3 =22;
+    
+    e_support = 1;
+    h_support = h;
     
     difference(){
         
         union(){
             translate([-l/2,-lg/2,0]) cube([l, lg, 3]);
-            translate([-l/2,-lg/2,-h]) cube([l, 3, h]);
+            translate([-l/2,-lg/2,0]) cube([l, 3, h]);
             for(i=[0,1]){
                 mirror([i,0, 0]) hull(){
                     translate([-27,-lg/2,0]) cube([3, lg, 3]);
-                    translate([-27,-lg/2,-h]) cube([3, 3, h]);
+                    translate([-27,-lg/2,0]) cube([3, 3, h]);
                 }
             }
+            
+            translate([l/2-e2,-lg/2,0])cube([e2, e2, h]);
+            
+            translate([-l/2,-lg/2,0])cube([e2, e2, h]);
+        }
+        
+        translate([0,0,80]) hull(){
+            rotate([90,0,0]) translate([-7,0,0])cylinder(r=3, 100);
+            rotate([90,0,0]) translate([7,0,0])cylinder(r=3, 100);
         }
         
         
-        for(i=[0,1]){
-            mirror([i,0, 0]) translate([x_vis/2,0,-h+10]) hull(){
-                rotate([90,0,0])cylinder(r=4, 100);
-                translate([0,0,30])rotate([90,0,0])cylinder(r=4, 100);
-            }
+        translate([0,0,3])rotate([180,0,180]) moteur2();
+            
+        translate([l/2-e2/2,-lg/2+10,-1])m8(200);
+        translate([l/2-e3-(e2-e3)/2,-lg/2-e3,h_support])cube([e3, e3, e_support]);
+    }
+    //translate([l/2-e2,-lg/2-e2,h_support+e_support])cube([e2, e2, 0.2]);
+    
+    %rotate([180,0,180])moteur2();
+    
+    %translate([0,-lg/2-12,h_support])rotate([0,0,190]) support_moteur2_bis();
+    
+}*/
+
+r_support = 20;
+
+module support_moteur3(x_vis = 80){
+    l = x_vis+20;
+    
+    
+    h=50;
+    x_moteur = 6;
+    
+    difference(){
+        
+        hull(){
+            translate([-x_moteur,0,0]) cylinder(h,r=45/2);
+            translate([-x_vis/2,0,0]) cylinder(h,r=12);
+            translate([x_vis/2,0,0]) cylinder(h,r=r_support+3);
+            translate([x_vis/2+r_support/2,0,0]) cylinder(h,r=r_support+3);
         }
+        
+        
+        translate([-x_vis/2,0,-1]) m8(h+2);
+        hull(){
+            translate([x_vis/2,0,3]) cylinder(h+2,r=r_support);
+            translate([x_vis/2+r_support/2,0,3]) cylinder(h,r=r_support);
+        }
+        hull(){
+            translate([x_vis/2,0,-1]) cylinder(h+2,r=r_support-2);
+            translate([x_vis/2+r_support/2,0,-1]) cylinder(h+2,r=r_support-2);
+        }
+            
         
         translate([0,0,-78]) hull(){
                 rotate([90,0,0]) translate([-7,0,0])cylinder(r=3, 100);
                 rotate([90,0,0]) translate([7,0,0])cylinder(r=3, 100);
             }
-        rotate([0,0,180])moteur2();
+        
+        translate([-x_moteur,0,2]) cylinder(h+2,r=r_moteur);
+            
+        translate([-x_moteur,0,2]) rotate([0,180,0])moteur2();
     }
    
     
-    %rotate([0,0,180])moteur2();
+    %translate([-x_moteur,0,2]) rotate([0,180,0])moteur2();
+    
+    color("blue")translate([x_vis/2,0,25]) rotate([0,180,0]) support_moteur4();
+
+}
+
+module support_moteur4(x_vis = 60){
+    h1 = 20;
+    h2 = h1+20;
+    difference(){
+        union(){
+            cylinder(r = r_support-1,h1);
+            cylinder(r = r_support-3,h2);
+        }
+        translate([r_support-8,0,-1]) m8(100);
+        //%translate([0,0,h2-8]) rotate([90,0,0]) translate([0,0,-50])m8(100);
+        translate([0,0,h2-8]) rotate([-90,-90,0]) support_nut(8, 100, 100);
+        
+    }
     
 }
 
 /**
 SAME
 **/
+
+x_vis_1 = 140;
+x_vis_2 = 80;
 
 module support_colonne_same(){
     e = 30;
@@ -412,41 +450,56 @@ module support_colonne_same(){
         union(){
             rotate([0,0,45])cube_arrondi(lg_int+de, l_int+de, e, r);
             cylinder(r=r, e);
-            translate([-l/2, -lg/2, 0])cube([l, lg, e]);
+            translate([-l/2, -lg/2, 0])cube([l, 110, e]);
             
-            translate([-50, 0, 0])cube([100, 83,e]);
         }
         translate([0, 0, -1]) rotate([0,0,45])cube_arrondi(lg_int, l_int, e+3, r);
             
-        rotate([0,0,180])translate([-l/2-2,-1,-1]) cube([l+4, 150, 150], center = false);
-        
         for(i=[-1,1]){
             translate([i*x_vis2/2, -100, e/2]) rotate([-90,0,0]) m8(200, false);
         }
         
         for(i=[-1,1]){
-            translate([i*x_vis/2,65, e/2]) rotate([-90,-90,0]) support_nut(8, 10, 100);
+            translate([i*x_vis2/2,65, e/2]) rotate([-90,-90,0]) support_nut(8, 10, 100);
         }
+        
+        translate([-l/2-2,-5, -1]) cube([l+4, 10, 150]);
     }
     
 }
 
 module support_moteur_same(){
-    support_moteur2(80);
+   
+   
+    support_moteur3(80);
+}
+
+
+module support_moteur_same2(){
+    difference(){
+        translate([-80,0,0]) cube([160,30,30]);
+        
+        translate([x_vis_1/2,100,15])  rotate([90,0,0]) m8(200, false);
+        translate([-x_vis_1/2,100,15]) rotate([90,0,0]) m8(200, false);
+        
+        translate([x_vis_2/2,15,-1])   m8(200, false);
+        translate([-x_vis_2/2,15,-1])  m8(200, false);
+    }
 }
 
 mode=0;
 
 if(mode==0){
     couronne(mode);
-    for(i=[0:n]){
-        rotate([0,0,i*360/n]) translate([0,d2/2,-1]) rotate([a,0,0]) translate([0,0,h2+2])          support_coronne();
-    }
+    
     translate([0,112,5]) rotate([-180,0,8]) pignon();
     
-    translate([0,105,-25])support_moteur_same();
+    translate([0,105,-25])rotate([-180,0,180]) support_moteur_same();
     
-    translate([0,0,-100])support_colonne_same();
+    
+    translate([0,0,-160])support_colonne_same();
+    translate([0,100,-160]) support_moteur_same2();
+    
 } else if(mode==1){
    couronne(mode);
 } else if(mode==2){
@@ -458,6 +511,7 @@ if(mode==0){
 } else if(mode==5){
     //support_volant();
     support_colonne_same();
+     translate([0,82,0])  support_moteur_same2();
     //moteur2();
 } else if(mode==6){
    support_moteur_same();
