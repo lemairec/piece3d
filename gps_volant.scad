@@ -378,21 +378,21 @@ module support_moteur3(x_vis = 80){
     difference(){
         
         hull(){
-            translate([-x_moteur,0,0]) cylinder(h,r=45/2);
-            translate([-x_vis/2,0,0]) cylinder(h,r=12);
-            translate([x_vis/2,0,0]) cylinder(h,r=r_support+3);
-            translate([x_vis/2+r_support/2,0,0]) cylinder(h,r=r_support+3);
+            translate([x_moteur,0,0]) cylinder(h,r=45/2);
+            translate([-x_vis/2,0,0]) cylinder(h,r=r_support+3);
+            translate([x_vis/2,0,0]) cylinder(h,r=12);
+            translate([-x_vis/2-r_support/2,0,0]) cylinder(h,r=r_support+3);
         }
         
         
-        translate([-x_vis/2,0,-1]) m8(h+2);
+        translate([x_vis/2,0,-1]) m8(h+2);
         hull(){
-            translate([x_vis/2,0,3]) cylinder(h+2,r=r_support);
-            translate([x_vis/2+r_support/2,0,3]) cylinder(h,r=r_support);
+            translate([-x_vis/2,0,3]) cylinder(h+2,r=r_support);
+            translate([-x_vis/2-r_support/2,0,3]) cylinder(h,r=r_support);
         }
         hull(){
-            translate([x_vis/2,0,-1]) cylinder(h+2,r=r_support-2);
-            translate([x_vis/2+r_support/2,0,-1]) cylinder(h+2,r=r_support-2);
+            translate([-x_vis/2,0,-1]) cylinder(h+2,r=r_support-2);
+            translate([-x_vis/2-r_support/2,0,-1]) cylinder(h+2,r=r_support-2);
         }
             
         
@@ -401,15 +401,15 @@ module support_moteur3(x_vis = 80){
                 rotate([90,0,0]) translate([7,0,0])cylinder(r=3, 100);
             }
         
-        translate([-x_moteur,0,2]) cylinder(h+2,r=r_moteur);
+        translate([x_moteur,0,2]) cylinder(h+2,r=r_moteur);
             
-        translate([-x_moteur,0,2]) rotate([0,180,0])moteur2();
+        translate([x_moteur,0,2]) rotate([0,180,0])moteur2();
     }
    
     
-    %translate([-x_moteur,0,2]) rotate([0,180,0])moteur2();
+    %translate([x_moteur,0,2]) rotate([0,180,0])moteur2();
     
-    color("blue")translate([x_vis/2,0,25]) rotate([0,180,0]) support_moteur4();
+    color("blue")translate([-x_vis/2,0,25]) rotate([0,180,0]) support_moteur4();
 
 }
 
@@ -433,6 +433,8 @@ module support_moteur4(x_vis = 60){
 SAME
 **/
 
+//a=-40 fail
+
 x_vis_1 = 140;
 x_vis_2 = 80;
 
@@ -445,22 +447,23 @@ module support_colonne_same(){
     l = 160;
     lg= 60;
     x_vis2 = 140;
+    a = -55;
     
     difference(){
         union(){
-            rotate([0,0,45])cube_arrondi(lg_int+de, l_int+de, e, r);
+            rotate([0,0,a])cube_arrondi(lg_int+de, l_int+de, e, r);
             cylinder(r=r, e);
             translate([-l/2, -lg/2, 0])cube([l, 110, e]);
             
         }
-        translate([0, 0, -1]) rotate([0,0,45])cube_arrondi(lg_int, l_int, e+3, r);
+        translate([0, 0, -1]) rotate([0,0,a])cube_arrondi(lg_int, l_int, e+3, r);
             
         for(i=[-1,1]){
-            translate([i*x_vis2/2, -100, e/2]) rotate([-90,0,0]) m8(200, false);
+            translate([i*x_vis2/2, -100, e/2]) rotate([-90,0,0]) cylinder(200, r=4.5);
         }
         
         for(i=[-1,1]){
-            translate([i*x_vis2/2,65, e/2]) rotate([-90,-90,0]) support_nut(8, 10, 100);
+        //    translate([i*x_vis2/2,65, e/2]) rotate([-90,-90,0]) support_nut(8, 10, 100);
         }
         
         translate([-l/2-2,-5, -1]) cube([l+4, 10, 150]);
@@ -487,7 +490,7 @@ module support_moteur_same2(){
     }
 }
 
-mode=0;
+mode=5;
 
 if(mode==0){
     couronne(mode);
@@ -511,7 +514,7 @@ if(mode==0){
 } else if(mode==5){
     //support_volant();
     support_colonne_same();
-     translate([0,82,0])  support_moteur_same2();
+    // translate([0,82,0])  support_moteur_same2();
     //moteur2();
 } else if(mode==6){
    support_moteur_same();
