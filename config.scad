@@ -34,6 +34,10 @@ m4_nut_d = 8.4;
 m4_nut_d2 = 7.5;
 m4_nut_h = 3.5;
 
+m8_nut_d = 15;
+m8_nut_d2 = 13;
+m8_nut_h = 6.5;
+
 608_r = 23/2;
 608_h = 8;
 
@@ -44,25 +48,34 @@ laser_printer_lg = 456;
 module support_nut(d=3, l_screw1 = 20, l_screw2 = 20, l_nut = 20, h_screw2 = 0.2){
     if(d==3){
         screw_r = r3;
-        nut_r = m3_nut_d/2;
+        nut_d = m3_nut_d;
         nut_h = m3_nut_h;
-        cylinder(nut_h, r = nut_r, $fn = 6, center = true);
-        translate([0, 0, -l_screw1])cylinder(l_screw1 +1, r = screw_r, $fn = 8);
-        translate([0, 0, m3_nut_h/2+ h_screw2])cylinder(l_screw2, r = screw_r, $fn = 8);
-        l = m3_nut_d*cos(30);
+        cylinder(nut_h, r = nut_d/2, $fn = 6, center = true);
+        translate([0, 0, -l_screw1])cylinder(l_screw1 +1, r = screw_r, $fn = 16);
+        translate([0, 0, nut_h/2+ h_screw2])cylinder(l_screw2, r = screw_r, $fn = 16);
+        l = nut_d*cos(30);
         translate([0, -l/2, -nut_h/2]) cube([l_nut, l,nut_h]);
     } else if(d==4){
         screw_r = r4;
-        nut_r = m4_nut_d/2;
+        nut_d = m4_nut_d;
         nut_h = m4_nut_h;
-        cylinder(nut_h, r = nut_r, $fn = 6, center = true);
-        translate([0, 0, -l_screw1])cylinder(l_screw1 +1, r = screw_r, $fn = 8);
-        translate([0, 0, m4_nut_h/2+ h_screw2])cylinder(l_screw2, r = screw_r, $fn = 8);
-        l = m4_nut_d*cos(30);
+        cylinder(nut_h, r = nut_d/2, $fn = 6, center = true);
+        translate([0, 0, -l_screw1])cylinder(l_screw1 +1, r = screw_r, $fn = 16);
+        translate([0, 0, nut_h/2+ h_screw2])cylinder(l_screw2, r = screw_r, $fn = 16);
+        l = nut_d*cos(30);
+        translate([0, -l/2, -nut_h/2]) cube([l_nut, l,nut_h]);
+    } else if(d==8){
+        screw_r = r8;
+        nut_d = m8_nut_d;
+        nut_h = m8_nut_h;
+        cylinder(nut_h, r = nut_d/2, $fn = 6, center = true);
+        translate([0, 0, -l_screw1])cylinder(l_screw1 +1, r = screw_r, $fn = 32);
+        translate([0, 0, nut_h/2+ h_screw2])cylinder(l_screw2, r = screw_r, $fn = 32);
+        l = nut_d*cos(30);
         translate([0, -l/2, -nut_h/2]) cube([l_nut, l,nut_h]);
     }
 }
-
+//support_nut(8);
 
 module nut(d=3, center = false){
     nut_r = m3_nut_d/2;
@@ -112,9 +125,7 @@ module m5(h, nut = false, head = false){
     cylinder(h, r = 2.7);
 }
 
-m8_nut_d = 15;
-m8_nut_d2 = 13;
-m8_nut_h = 6.5;
+
 module m8(h, nut = false, head = false){
     cylinder(h, r = r8);
     if(nut){

@@ -127,12 +127,12 @@ module support(){
 
 //support_tamie();
 
-//support();
+support();
 
 module tamie_standart(r){
    tamie(r, round(3.14*tamie2_r/r/1.5/2)*2, r*2.5); 
 }
 
-tamie_standart(1);
+//tamie_standart(1);
 //translate([0,0,0])tamie(trou2_r, trou2_nb, trou2_h);
 //translate([0,0,-tamie2_l])tamie2(trou1_r, trou1_nb, trou1_h);
