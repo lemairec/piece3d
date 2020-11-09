@@ -405,7 +405,7 @@ module support_cabine_ih(){
     translate([-20,-r, 0]) cube([40, 2*r, 0.2]);
 }
 
-mode = 8;
+mode = 0;
 if(mode==0){
     //translate([0, -x, -10.2])screen();
     //rotate([0,0,180]) translate([100,-70-x,10]) color("blue") import("component/pi_model_v4.stl");

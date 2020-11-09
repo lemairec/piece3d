@@ -75,7 +75,40 @@ module support_nut(d=3, l_screw1 = 20, l_screw2 = 20, l_nut = 20, h_screw2 = 0.2
         translate([0, -l/2, -nut_h/2]) cube([l_nut, l,nut_h]);
     }
 }
-//support_nut(8);
+
+
+module support_nut2(d=3, l_screw1 = 20, l_screw2 = 20, l_nut = 20, h_screw2 = 0.2){
+    if(d==3){
+        screw_r = r3;
+        nut_d = m3_nut_d;
+        nut_h = m3_nut_h;
+        rotate([0,0,30]) cylinder(nut_h, r = nut_d/2, $fn = 6, center = true);
+        translate([0, 0, -l_screw1])cylinder(l_screw1 +1, r = screw_r, $fn = 16);
+        translate([0, 0, nut_h/2+ h_screw2])cylinder(l_screw2, r = screw_r, $fn = 16);
+        l = nut_d;
+        translate([0, -l/2, -nut_h/2]) cube([l_nut, l,nut_h]);
+    } else if(d==4){
+        screw_r = r4;
+        nut_d = m4_nut_d;
+        nut_h = m4_nut_h;
+        rotate([0,0,30]) cylinder(nut_h, r = nut_d/2, $fn = 6, center = true);
+        translate([0, 0, -l_screw1])cylinder(l_screw1 +1, r = screw_r, $fn = 16);
+        translate([0, 0, nut_h/2+ h_screw2])cylinder(l_screw2, r = screw_r, $fn = 16);
+        l = nut_d;
+        translate([0, -l/2, -nut_h/2]) cube([l_nut, l,nut_h]);
+    } else if(d==8){
+        screw_r = r8;
+        nut_d = m8_nut_d;
+        nut_h = m8_nut_h;
+        rotate([0,0,30])cylinder(nut_h, r = nut_d/2, $fn = 6, center = true);
+        translate([0, 0, -l_screw1])cylinder(l_screw1 +1, r = screw_r, $fn = 32);
+        translate([0, 0, nut_h/2+ h_screw2])cylinder(l_screw2, r = screw_r, $fn = 32);
+        l = nut_d;
+        translate([0, -l/2, -nut_h/2]) cube([l_nut, l,nut_h]);
+    }
+}
+
+support_nut2(8);
 
 module nut(d=3, center = false){
     nut_r = m3_nut_d/2;
