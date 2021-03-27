@@ -140,8 +140,8 @@ module screen_up(){
         hull(){
             for(i=[-1,1]){
                 for(j=[-1,1]){
-                    translate([i*(boitier_l/2-15), -(boitier_lg/2-r-e), e]) cylinder(r=5, boitier_h+2);
-                    translate([i*(boitier_l/2-15), (boitier_lg/2-r-e-10), e]) cylinder(r=5, boitier_h+2);
+                    translate([i*(boitier_l/2-15), -(boitier_lg/2-15), e]) cylinder(r=5, boitier_h+2);
+                    translate([i*(boitier_l/2-15), (boitier_lg/2-15), e]) cylinder(r=5, boitier_h+2);
                 }
             }
         }
@@ -162,7 +162,7 @@ module screen_up(){
         
          for(i=[-1,1]){
             hull(){
-                translate([i*35,0,boitier_h/2]) rotate([-90,0,0])cylinder(r=4.5, 1000);
+                translate([i*25,0,boitier_h/2]) rotate([-90,0,0])cylinder(r=3.2, 1000, center=true);
                 
             }
         }
@@ -185,6 +185,13 @@ module screen_up(){
             
             
         
+        }
+        
+        for(i=[-0.1, -0.3, 0.1, 0.3]){
+            hull(){
+                translate([i*boitier_l,0,boitier_h-8]) rotate([90,0,0])cylinder(r=2, 1000);
+                
+            }
         }
         
         
@@ -405,7 +412,28 @@ module support_cabine_ih(){
     translate([-20,-r, 0]) cube([40, 2*r, 0.2]);
 }
 
-mode = 0;
+module support_cabine_ih2(){
+    x = 30;
+    r2=26/2;
+    r=r2+5;
+    e_2 = 50;
+    h = 14;
+    e = 7;
+    difference(){
+        translate([-35,-r,0])cube([70, 2*r, h]);
+        
+        translate([-e_2/2,0,-1])cylinder(r=3.2,60);
+        translate([e_2/2,0,-1])cylinder(r=3.2,60);
+        cube([32, 100, e*2], center=true);
+    }
+    
+    for(i=[-12, -6 ,0, 6, 12]){
+        translate([i,-r, 0]) cube([0.2, 2*r, 10]);
+    }
+    translate([-20,-r, 0]) cube([40, 2*r, 0.2]);
+}
+
+mode = 8;
 if(mode==0){
     //translate([0, -x, -10.2])screen();
     //rotate([0,0,180]) translate([100,-70-x,10]) color("blue") import("component/pi_model_v4.stl");
@@ -415,8 +443,8 @@ if(mode==0){
     rotate([0,180,180])screen_fond();
     translate([0,0,boitier_h+1]) screen_up2();
     
-    translate([0,-y_camera+10,boitier_h/2]) rotate([-90,0,0]) support_ecran1();
-    translate([0,-y_camera+31,boitier_h/2]) rotate([-360/nb_cran,0,0]) support_ecran2();
+    /*translate([0,-y_camera+10,boitier_h/2]) rotate([-90,0,0]) support_ecran1();
+    translate([0,-y_camera+31,boitier_h/2]) rotate([-360/nb_cran,0,0]) support_ecran2();*/
     
 } else if(mode==1){
     screen_up();
@@ -433,6 +461,6 @@ if(mode==0){
 } else if(mode==7){
     support_camera2();
 } else if(mode==8){
-    support_cabine_ih();
+    support_cabine_ih2();
 }
 

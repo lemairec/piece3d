@@ -43,8 +43,9 @@ module tube_2(l2){
     }
 }
 
-l=2700;
-h = 1500;
+l=3900/2;
+h = 1700;
+dh = 200;
 
 n=9;
 module portail(l){
@@ -191,14 +192,121 @@ module portail(l){
         }
 
         
+    } else if (mode==7){
+        h2 = h/2;
+        translate([0,-40,h2-20]) rotate([90,0,0]) tube(l-40);
+        
+        l3 = l-120;
+        h3 = h2-100;
+        
+        translate([0,60,60]) cube([1,l3,h3]);
+        translate([0,60,h2+40]) cube([1,l3,h3]);
+    } else if (mode==8){
+        h2 = h/2;
+        l2 = l/2;
+        translate([0,-40,h2-20]) rotate([90,0,0]) tube(l-40);
+        translate([0,l2-20,0]) tube(h-40);
+        
+        l3 = l2-100;
+        h3 = h2-100;
+        echo(l3+" "+h3);
+        
+        translate([0,60,60]) cube([1,l3,h3]);
+        translate([0,60,h2+40]) cube([1,l3,h3]);
+        translate([0,l2+40,60]) cube([1,l3,h3]);
+        translate([0,l2+40,h2+40]) cube([1,l3,h3]);
+    } else if (mode==9){
+        h2 = h/2;
+        l2 = l/2;
+        translate([0,-40,h2-20]) rotate([90,0,0]) tube(l-40);
+        translate([0,l2-20,0]) tube(h/2-20);
+        
+        l3 = l2-100;
+        h3 = h2-100;
+        echo(l3);
+        echo(h3);
+        echo("");
+        translate([0,l2+40,60]) cube([1,l3,h3]);
+        translate([0,60,60]) cube([1,l3,h3]);
+        
+        l4 = l/3-100;
+        z2 = h2+20;
+        echo(l4);
+        echo(h3);
+        echo("");
+        
+        translate([0,60,z2+20]) cube([1,l4,h3]);
+        translate([0,l/3+40,z2+20]) cube([1,l4,h3]);
+        translate([0,l/3-20,z2]) tube(h/2-20);
+        translate([0,l*2/3+40,z2+20]) cube([1,l4,h3]);
+        translate([0,l*2/3-20,z2]) tube(h/2-20);
+        
+        
+        
     }
 }
 
-mode = 4;
+module portail2(l){
+    
+    a = atan((dh+30)/l);
+    translate([0,e_l,+e_l]) rotate([-90,0,0])tube(l-2*e_l);
+    translate([0,e_l,h]) rotate([-90+a,0,0])tube(l-2*e_l+40);
+
+    tube(h);
+    translate([0,l-e_l]) tube(h+dh+40);;
+    
+    h2 = h/2;
+        translate([0,-40,h2-20]) rotate([90,0,0]) tube(l-40);
+        
+        l3 = l-120;
+        h3 = h2-100;
+        
+        translate([0,60,60]) cube([1,l3,h3]);
+        translate([0,60,h2+40]) hull(){
+            cube([1,1,h3]);
+            translate([0,l3,0]) cube([1,1,h3+dh]);
+        }
+        
+}
+
+module portail3(l){
+    
+    a = atan((dh+30)/l);
+    translate([0,e_l,+e_l]) rotate([-90,0,0])tube(l-2*e_l);
+    translate([0,e_l,h+dh+10]) rotate([-90-a,0,0])tube(l-2*e_l+40);
+
+    tube(h+dh+0);
+    translate([0,l-e_l]) tube(h);;
+    
+    h2 = h/2;
+        translate([0,-40,h2-20]) rotate([90,0,0]) tube(l-40);
+        
+        l3 = l-120;
+        h3 = h2-100;
+        
+        translate([0,60,60]) cube([1,l3,h3]);
+        translate([0,60,h2+40]) hull(){
+            cube([1,1,h3+dh]);
+            translate([0,l3,0]) cube([1,1,h3]);
+        }
+        
+}
+
+mode = 10;//4 10
+
+module portial_(l){
+    if(mode == 10){
+        portail2(l);
+    } else if(mode == 11){
+        portail3(l);
+    } else {
+        portail(l);
+    }
+}
 
 a = 0;
- mirror([0,0,0]) translate([0,10,0]) rotate([0,0,a])portail(l);
- mirror([0,0,0])mirror([0,1,0]) translate([0,10,0]) rotate([0,0,a])portail(l);
+ mirror([0,0,0]) translate([0,10,0]) rotate([0,0,a])portial_(l);
+ mirror([0,0,0])mirror([0,1,0]) translate([0,10,0]) rotate([0,0,a])portial_(l);
 
     
 //rotate([0,90,0]) scale(0.05)portail();

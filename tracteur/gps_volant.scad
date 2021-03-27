@@ -1,5 +1,5 @@
-use <config.scad>
-use <libs/gears.scad>
+use <../config.scad>
+use <../libs/gears.scad>
 
 $fs=$fs/2;
 $fa=$fa/2;
@@ -30,10 +30,11 @@ colonne_d=56;
 d_case = 145;
 
 //same
-same = false;
-//lg_int = 25;
-//h_int = 6;
-d_same = 120;
+//0 same
+//1 5120
+//2 mk3
+tracteur = 2;
+
 
 
 
@@ -44,6 +45,56 @@ r_vis = 4.2;
 
 module m8(l, r){
     cylinder(r=r_vis, l);
+}
+
+module couronne1(d_int, ang, h_int){
+    lg_int = 25;
+    
+    l = lg_int+30;
+    h2=10;
+    
+    d2=140;
+    d3 = 140;
+
+    difference(){
+        
+        union(){
+            spur_gear (modul=modul, tooth_number=tooth_number2, width=10, bore=d_int, pressure_angle=pressure_angle, helix_angle=-helix_angle, optimized=true);
+            
+            for(i=[0:n]){
+                rotate([0,0,i*360/n])hull(){
+                    translate([-l/2,d2/2,0]) cylinder(r=9,h2);
+                    translate([ l/2,d2/2,0]) cylinder(r=9,h2);
+                }
+            }
+            
+            rotate([0,0,0.5*360])hull(){
+                translate([-10,d3/2,0]) cylinder(r=9,h2);
+                translate([ 10,d3/2,0]) cylinder(r=9,h2);
+            }
+            
+        }
+        
+        
+        for(i=[0:n]){
+            rotate([0,0,i*360/n]) translate([0,d_int/2,h2-h_int]) rotate([ang,0,0]) translate([-lg_int/2,-10,]) cube([lg_int, 100, 20]);
+            
+        
+            for(j=[-1,1]){
+                rotate([0,0,i*360/n])translate([j*l/2,d2/2,-1]) m8(200);
+            }
+            
+            rotate([0,0,0.5*360])translate([-25,d3/2,-1])m8(200);;
+            rotate([0,0,0.5*360])translate([-10,d3/2,-1])m8(200);;
+            rotate([0,0,0.5*360])translate([ 10,d3/2,-1]) m8(200);;
+            rotate([0,0,0.5*360])translate([25,d3/2,-1])m8(200);;
+            
+        }
+
+        translate([0,-200,-1]) cube([0.5,200,100]);
+        
+        
+    }
 }
 
 /**
@@ -156,13 +207,17 @@ module support_colonne_ih(){
 module support_colonne2_ih(){
     
     difference(){
-        translate([-65,0,0]) cube([120,30,30]);
+        union(){
+            translate([-60,0,0]) cube([120,30,30]);
+            for(i=[0,1]){
+                mirror([i,0,0])translate([-60,30,0]) cube([30,30,30]);
+            }
+        }   
+        translate([x_vis_ih/2,100,15])  rotate([90,0,0]) m8(200, false);
+        translate([-x_vis_ih/2,100,15]) rotate([90,0,0]) m8(200, false);
         
-        translate([x_vis_ih/2-9,100,15])  rotate([90,0,0]) m8(200, false);
-        translate([-x_vis_ih/2-9,100,15]) rotate([90,0,0]) m8(200, false);
-        
-        translate([x_vis_2/2,15,-1])   m8(200, false);
-        translate([-x_vis_2/2,15,-1])  m8(200, false);
+        translate([x_vis_2/2,45,-1])   m8(200, false);
+        translate([-x_vis_2/2,45,-1])  m8(200, false);
     }
 }
 
@@ -174,56 +229,11 @@ module support_colonne2_ih(){
 lg_same_int = 25;
 h_same_int = 30;
 l_same = lg_same_int+30;
+d_same = 120;
+same_ang = 25;
+
 module couronne_same(){
-    lg_int = 25;
-    h_int = 2;
-    
-    l = lg_int+30;
-    h2=10;
-    a=25;
-    
-    d2=140;
-    d3 = 140;
-
-    difference(){
-        
-        union(){
-            spur_gear (modul=modul, tooth_number=tooth_number2, width=10, bore=d_same, pressure_angle=pressure_angle, helix_angle=-helix_angle, optimized=true);
-            
-            for(i=[0:n]){
-                rotate([0,0,i*360/n])hull(){
-                    translate([-l/2,d2/2,0]) cylinder(r=9,h2);
-                    translate([ l/2,d2/2,0]) cylinder(r=9,h2);
-                }
-            }
-            
-            rotate([0,0,0.5*360])hull(){
-                translate([-10,d3/2,0]) cylinder(r=9,h2);
-                translate([ 10,d3/2,0]) cylinder(r=9,h2);
-            }
-            
-        }
-        
-        
-        for(i=[0:n]){
-            rotate([0,0,i*360/n])translate([0,d2/2,-3.5]) rotate([a,0,0]) translate([-lg_int/2,-20,h2+1.1-h_int]) cube([lg_int, 40, 20]);
-            
-        
-            for(j=[-1,1]){
-                rotate([0,0,i*360/n])translate([j*l/2,d2/2,-1]) m8(200);
-            }
-            
-            rotate([0,0,0.5*360])translate([-25,d3/2,-1])m8(200);;
-            rotate([0,0,0.5*360])translate([-10,d3/2,-1])m8(200);;
-            rotate([0,0,0.5*360])translate([ 10,d3/2,-1]) m8(200);;
-            rotate([0,0,0.5*360])translate([25,d3/2,-1])m8(200);;
-            
-        }
-
-        translate([0,-200,-1]) cube([0.5,200,100]);
-        
-        
-    }
+    couronne1(d_same, 25, 8);
 }
 
 module support_couronne_same(){
@@ -271,22 +281,20 @@ module support_couronne_same3(){
 x_vis_same = 140;
 x_vis_2 = 100;
 
-module support_colonne_same(){
+module support_colonne_same2(){
     e = 20;
     lg_int = 95;
     l_int = 113;
     de=20;
     r  = 20;
     l = 160;
-    lg= 55;
+    lg= 70;
     x_vis2 = 140;
     a = -50;//-55
     
     difference(){
         union(){
-            rotate([0,0,a])cube_arrondi(lg_int+de, l_int+de, e, r);
-            cylinder(r=r, e);
-            translate([-l/2, -lg/2-5, 0])cube([l, 111, e]);
+            translate([-l/2, 5, 0])cube([l, lg, e]);
             
         }
         translate([0, 0, -1]) rotate([0,0,a])cube_arrondi(lg_int, l_int, e+3, r);
@@ -295,34 +303,83 @@ module support_colonne_same(){
             translate([i*x_vis2/2, -100, e/2]) rotate([-90,0,0]) cylinder(200, r=4.5);
         }
         
-        for(i=[-1,1]){
-            translate([i*x_vis2/2,76, e/2]) rotate([-90,-90,0]) support_nut(8, 10, 100);
-        }
-        
-        translate([-l/2-2,-5, -1]) cube([l+4, 10, 150]);
+        cube([l+4, 12, 150], center = true);
     }
-    
 }
 
-module support_colonne2_same(){
+module support_colonne_same(){
+    support_colonne_same2();
+    rotate([0,0,180])support_colonne_same2();
+}
+
+module support_colonne_same3(){
+    rotate([-90,0,0])support_colonne_same2();
+}
+
+
+/**
+ * MK3
+ **/
+
+lg_mk3_int = 24; //23
+h_mk3_int = 26;
+l_mk3 = lg_mk3_int+30;
+a_mk3 = 10;
+module couronne_mk3(){
+    couronne1(d_same, a_mk3, 5);
+}
+
+module support_couronne_mk3(){
     difference(){
-        translate([-80,0,0]) cube([160,30,30]);
-        
-        translate([x_vis_same/2,100,15])  rotate([90,0,0]) m8(200, false);
-        translate([-x_vis_same/2,100,15]) rotate([90,0,0]) m8(200, false);
-        
-        translate([x_vis_2/2,15,-1])   m8(200, false);
-        translate([-x_vis_2/2,15,-1])  m8(200, false);
+        union(){
+            translate([-l_same/2-6,-8,0])cube([l_same+12, 16, e_support]);
+            intersection(){
+                translate([0,-25,6]) rotate([a_mk3,0,0])cube([lg_mk3_int+12, 100, h_mk3_int+12], center = true);
+                translate([-l_same/2-6,-8,0])cube([l_same+12, 16, 70]);
+            }
+        }
+        translate([-l_same/2,0,-1])  m8(200);
+        translate([ l_same/2,0,-1])  m8(200);
+        translate([0,-25,6]) rotate([a_mk3,0,0])cube([lg_mk3_int, 100, h_mk3_int], center = true);
     }
 }
+
+module support_colonne_mk3(){
+    e = 30;
+    r1  = 56/2;
+    r2  = 76/2;
+    dr = (r2-r1)/2;
+    l = 120;
+    lg= 70;
+    
+    difference(){
+        union(){
+            translate([-l/2, -lg/2, 0])cube([l, lg, e]);
+        }
+        hull(){
+            translate([-dr, 0, -1])cylinder(r=r1, e+2);
+            translate([dr, 0, -1])cylinder(r=r1, e+2);
+            
+        }
+        cube([150, 5, 150], center = true);
+        
+        for(i=[-1,1]){
+            translate([i*x_vis_ih/2, -50, e/2]) rotate([-90,0,0]) m8(100, false);
+        }
+        
+    }
+}
+
 
     
 /**
  * Common
  **/
 
+
+
 module couronne(mode2){
-    if(same){
+    if(tracteur == 0){
         if(mode2 == 0){
             couronne_same();
             for(i=[0:n]){
@@ -338,7 +395,7 @@ module couronne(mode2){
             //translate([0, -10, 0]) support_couronne_same3();
             //translate([0, -30, 0]) support_couronne_same3();
         }
-    } else {
+    } else if(tracteur == 1){
         if(mode2 == 0){
             couronne_ih();
             for(i=[0:n]){
@@ -351,19 +408,33 @@ module couronne(mode2){
             translate([0,20,0]) support_couronne_ih();
             translate([0,40,0]) support_couronne_ih2();
         }
+    } else if(tracteur == 2){
+        if(mode2 == 0){
+            couronne_mk3();
+            for(i=[0:n]){
+                rotate([0,0,(i+0.5)*360/n]) translate([0,-d2/2+6,-1]) translate([0,0,h2+1.5])  rotate([0,0,180])support_couronne_mk3();
+            }
+            rotate([0,0,360*3/6]) translate([0,d2/2,-1]) translate([0,0,h2+1.5])  rotate([0,0,180])support_couronne_mk3();
+        } else if(mode2 == 1){
+            couronne_mk3();
+        } else if(mode2 == 2){
+            translate([0, 00, 8]) rotate([-90,0,0]) support_couronne_mk3();
+            translate([0, 45, 8]) rotate([-90,0,0]) support_couronne_mk3();
+            translate([0, 90, 8]) rotate([-90,0,0]) support_couronne_mk3();
+            //translate([0, -10, 0]) support_couronne_same3();
+            //translate([0, -30, 0]) support_couronne_same3();
+        }
     }
     
 }
 
 module support_colonne(mode2){
-    if(same){
-        if(mode2 == 0){
-            support_colonne_same();
-        }
-    } else {
-        if(mode2 == 0){
-            support_colonne_ih();
-        }
+    if(tracteur == 0){
+        support_colonne_same();
+    } else if(tracteur == 1){
+        support_colonne_ih();
+    } else if(tracteur == 2){
+        support_colonne_mk3();
     }
     
 }
@@ -403,7 +474,7 @@ module pignon2(){
     difference(){
         spur_gear (modul=modul, tooth_number=tooth_number1, width=12, bore=2, pressure_angle=pressure_angle, helix_angle=helix_angle, optimized=false);
         translate([0,0,-1])cylinder(r=4.5, 35, $fn=16);
-        translate([0,0,5])cylinder(r=57/2, 35);
+        translate([0,0,5])cylinder(r=58/2, 35);
         
         //translate([7,0,20])rotate([0,-90,0])m3_nut(10);
         //translate([0,0,20])rotate([0,90,0])m3(20);
@@ -603,6 +674,47 @@ module support_moteur5(x_vis = 100){
     
 }
 
+module support_moteur6(x_vis = 100){
+    l = x_vis+20;
+    y_vis = -14;
+    lg = 0;
+    
+    h=130;
+    h2=80;
+    x_moteur = 0;
+    
+    difference(){
+        union(){
+            hull(){
+                cylinder(h2,r=52/2);
+                translate([x_vis/2,y_vis,0]) cylinder(h2,r=12);
+                translate([-x_vis/2,y_vis,0]) cylinder(h2,r=12);
+                
+            }
+            cylinder(h,r=52/2);
+        }
+            
+        
+        
+        translate([-x_vis/2,y_vis,-1]) cylinder(h+2,r=5);
+        translate([x_vis/2,y_vis,-1]) cylinder(h+2,r=5);
+        
+        
+        /*hull(){
+            translate([x_moteur,0,45]) cube([45,200,2], center = true);
+            translate([x_moteur,0,h]) cube([80,200,2], center = true);
+        }¨*/
+        translate([x_moteur,0,3]) rotate([0,0,135])moteur2();
+        
+        translate([35,0,h2/2]) rotate([90,0,0]) cylinder(r=3, 100, center=true);
+    }
+   
+    
+    %translate([x_moteur,0,3 ]) rotate([0,0,135])moteur2();
+    
+    
+}
+
 
 module support_moteur_same(){
    
@@ -611,7 +723,7 @@ module support_moteur_same(){
 }
 
 
-mode=3;
+mode=5;
 if(mode==0){
     couronne(mode);
     
@@ -620,9 +732,9 @@ if(mode==0){
     
     
     translate([0,0,-160]) support_colonne(mode);
-    translate([0,100,-160]) support_colonne2();
+    translate([0,60,-160]) support_colonne2();
 
-    translate([0,120,-25])rotate([-180,0,180]) support_moteur5();
+    translate([0,120,-25])rotate([-180,0,180]) support_moteur6();
     
 } else if(mode==1){
    couronne(mode);
@@ -631,12 +743,9 @@ if(mode==0){
 } else if(mode==3){
    pignon2();
 } else if(mode==4){
-   rotate([180,0, 0])support_moteur5();
+   rotate([180,0, 0])support_moteur6();
 } else if(mode==5){
-    //support_volant();
-    support_colonne_same();
-    // translate([0,82,0])  support_moteur_same2();
-    //moteur2();
+    support_colonne();
 } else if(mode==6){
    support_moteur_same();
 } else if(mode==7){
