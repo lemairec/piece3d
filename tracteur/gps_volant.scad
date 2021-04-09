@@ -325,6 +325,8 @@ lg_mk3_int = 24; //23
 h_mk3_int = 26;
 l_mk3 = lg_mk3_int+30;
 a_mk3 = 10;
+
+x_vis_mk3 = 90;
 module couronne_mk3(){
     couronne1(d_same, a_mk3, 5);
 }
@@ -348,7 +350,7 @@ module support_colonne_mk3(){
     e = 30;
     r1  = 56/2;
     r2  = 76/2;
-    dr = (r2-r1)/2;
+    dr = r2-r1;
     l = 120;
     lg= 70;
     
@@ -364,7 +366,7 @@ module support_colonne_mk3(){
         cube([150, 5, 150], center = true);
         
         for(i=[-1,1]){
-            translate([i*x_vis_ih/2, -50, e/2]) rotate([-90,0,0]) m8(100, false);
+            translate([i*x_vis_mk3/2, -50, e/2]) rotate([-90,0,0]) m8(100, false);
         }
         
     }
