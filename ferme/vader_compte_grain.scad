@@ -1,4 +1,4 @@
-include <config.scad>
+use <config.scad>
 
 lg=20;
 l = 80;

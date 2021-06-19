@@ -38,6 +38,10 @@ m8_nut_d = 15;
 m8_nut_d2 = 13;
 m8_nut_h = 6.5;
 
+m12_nut_d = 24;
+m12_nut_d2 = 22;
+m12_nut_h = 8;//todo
+
 608_r = 23/2;
 608_h = 8;
 
@@ -116,6 +120,10 @@ module nut(d=3, center = false){
     if(d==3){
         nut_r = m3_nut_d/2;
         nut_h = m3_nut_h;
+    }
+    if(d==12){
+        nut_r = m12_nut_d/2;
+        nut_h = m12_nut_h;
     } 
     cylinder(nut_h, r = nut_r, $fn = 6, center = center);
 }

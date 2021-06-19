@@ -725,7 +725,7 @@ module support_moteur_same(){
 }
 
 
-mode=5;
+mode=3;
 if(mode==0){
     couronne(mode);
     
@@ -745,7 +745,7 @@ if(mode==0){
 } else if(mode==3){
    pignon2();
 } else if(mode==4){
-   rotate([180,0, 0])support_moteur6();
+   rotate([0,0, 0])support_moteur6();
 } else if(mode==5){
     support_colonne();
 } else if(mode==6){
@@ -760,7 +760,6 @@ if(mode==0){
 //moteur2();
 
 //support_moteur();
-
 
 
 

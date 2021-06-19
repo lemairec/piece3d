@@ -1,4 +1,4 @@
-use <../config.scad>
+use <../../config.scad>
 
 $fs=$fs/2;
 $fa=$fa/2;
@@ -461,6 +461,6 @@ if(mode==0){
 } else if(mode==7){
     support_camera2();
 } else if(mode==8){
-    support_cabine_ih2();
+    support_cabine_ih();
 }
 
