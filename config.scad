@@ -112,7 +112,7 @@ module support_nut2(d=3, l_screw1 = 20, l_screw2 = 20, l_nut = 20, h_screw2 = 0.
     }
 }
 
-support_nut2(8);
+//support_nut2(8);
 
 module nut(d=3, center = false){
     nut_r = m3_nut_d/2;
@@ -121,14 +121,21 @@ module nut(d=3, center = false){
         nut_r = m3_nut_d/2;
         nut_h = m3_nut_h;
     }
+    if(d==8){
+        cylinder(m8_nut_h, r = m8_nut_d/2, $fn = 6, center = center);
+    }
+        
     if(d==12){
-        nut_r = m12_nut_d/2;
-        nut_h = m12_nut_h;
-    } 
-    cylinder(nut_h, r = nut_r, $fn = 6, center = center);
+        cylinder(m12_nut_h, r = m12_nut_d/2, $fn = 6, center = center);
+    } else {
+        
+    }
+    echo(nut_r);
+    
+    
 }
 
-
+//nut(12);
 
 module m3(h, nut = false, head = false){
     cylinder(h, m3_r, m3_r, $fn=16);

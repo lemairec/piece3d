@@ -15,7 +15,7 @@ difference(){
                 translate([ i*7, -55, 0]) cylinder(r=0.1, h);
                 translate([ i*(7+10),-55, 0]) cylinder(r=0.1, h);
                 translate([ i*14, 65, 0]) cylinder(r=0.1, h);
-                translate([ i*(14+14), 65, 0]) cylinder(r=0.1, h);
+                translate([ i*(17+14), 65, 0]) cylinder(r=0.1, h); //14+14, 16+14
             }
         }
     }

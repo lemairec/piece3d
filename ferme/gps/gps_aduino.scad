@@ -1,4 +1,4 @@
-use <../config.scad>
+use <../../config.scad>
 
 boitier_l = 85;
 boitier_lg = 110;
