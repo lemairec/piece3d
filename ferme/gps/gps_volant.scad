@@ -361,7 +361,7 @@ module support_couronne_mk3_2(){
     }
 }
 
-module support_colonne_mk3(){
+module support_colonne_mk3(support = true){
     e = 30;
     r1  = 56/2;
     r2  = 76/2;
@@ -372,13 +372,16 @@ module support_colonne_mk3(){
     difference(){
         union(){
             translate([-l/2, -lg/2, 0])cube([l, lg, e]);
+            if(support){
+                translate([-10, -lg/2, 0])cube([20, 10, e+15]);
+            }
         }
         hull(){
-            translate([-dr, 0, -1])cylinder(r=r1, e+2);
-            translate([dr, 0, -1])cylinder(r=r1, e+2);
+            translate([-dr, 0, -1])cylinder(r=r1, e+40);
+            translate([dr, 0, -1])cylinder(r=r1, e+40);
             
         }
-        cube([150, 5, 150], center = true);
+        translate([-75, -3, -75]) cube([150, 150, 150]);
         
         for(i=[-1,1]){
             translate([i*x_vis_mk3/2, -50, e/2]) rotate([-90,0,0]) m8(100, false);
@@ -531,6 +534,7 @@ module moteur2(){
     translate([0, 0,-40]) cylinder(r=6/2, 50);
     translate([-10, 0, 115]) cube([20, 80, 20]);
 }
+
 
 
 
@@ -709,7 +713,7 @@ module support_moteur_same(){
 }
 
 
-mode=2;
+mode=0;
 if(mode==0){
     couronne(mode);
     
@@ -735,7 +739,7 @@ if(mode==0){
 } else if(mode==6){
    rotate([0,0, 0])support_moteur3_bis();
 } else if(mode==7){
-    support_colonne();
+    rotate([90,0, 0])support_colonne();
 } else if(mode==8){
    support_moteur_same();
 } else if(mode==9){

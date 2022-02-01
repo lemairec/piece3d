@@ -34,9 +34,8 @@ m4_nut_d = 8.4;
 m4_nut_d2 = 7.5;
 m4_nut_h = 3.5;
 
-m8_nut_d = 15;
-m8_nut_d2 = 13;
-m8_nut_h = 6.5;
+m8_nut_d = 15.5;
+m8_nut_h = 7;
 
 m12_nut_d = 24;
 m12_nut_d2 = 22;
@@ -114,25 +113,34 @@ module support_nut2(d=3, l_screw1 = 20, l_screw2 = 20, l_nut = 20, h_screw2 = 0.
 
 //support_nut2(8);
 
-module nut(d=3, center = false){
+module nut(d=3, h=0, center=false){
     nut_r = m3_nut_d/2;
     nut_h = m3_nut_h;
     if(d==3){
-        nut_r = m3_nut_d/2;
-        nut_h = m3_nut_h;
+        cylinder(m3_nut_h, r = m3_nut_d/2, $fn = 6, center = center);
+        if(h!=0){
+            cylinder(h, r = m3_nut_d/2, $fn = 6, center = center);
+        }
+    }
+    if(d==4){
+        cylinder(m4_nut_h, r = m4_nut_d/2, $fn = 6, center = center);
+        if(h!=0){
+            cylinder(h, r = m4_nut_d/2, $fn = 6, center = center);
+        }
     }
     if(d==8){
         cylinder(m8_nut_h, r = m8_nut_d/2, $fn = 6, center = center);
+        if(h!=0){
+            cylinder(h, r = m8_nut_d/2, $fn = 6, center = center);
+        }
     }
         
     if(d==12){
         cylinder(m12_nut_h, r = m12_nut_d/2, $fn = 6, center = center);
-    } else {
-        
+        if(h!=0){
+            cylinder(h, r = m12_nut_d/2, $fn = 6, center = center);
+        }
     }
-    echo(nut_r);
-    
-    
 }
 
 //nut(12);
@@ -316,3 +324,4 @@ module cran_y_vis(_l, e, cran, type_vis = 3, trous = [0.1, 0.5, 0.9]){
 module cran_y_nuts(_l, e, cran, type_vis = 3, trous = [0.1, 0.5, 0.9]){
     translate([0, _l]) rotate([0, 0, -90]) cran_x_nuts(_l, e, cran, type_vis, trous);
 }
+
