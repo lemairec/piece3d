@@ -24,8 +24,6 @@ ang = 12; //8
 h_int = 12; //18
 d_couronne = 120;
 
-//2 mk3
-tracteur = 2;
 
 l = lg_int+10;
 h2=10;
@@ -83,91 +81,7 @@ module couronne_deutz(){
     }
 }
 
-/**
- * IH
- **/
-
-
 e_support = 5;
-module support_couronne_ih(){
-    difference(){
-        union(){
-            hull(){
-                translate([-l/2,0,0]) cylinder(r=6,e_support);
-                translate([ l/2,0,0]) cylinder(r=6,e_support);
-            }
-        }
-        translate([-l/2,0,-1])  m4(200);
-        translate([ 0,0,-1])  m4(200);
-        translate([ l/2,0,-1])  m4(200);
-    }
-}
-
-module support_couronne_ih2(){
-    difference(){
-        union(){
-            hull(){
-                translate([-l/2,0,0]) cylinder(r=6,e_support);
-                translate([ l/2,0,0]) cylinder(r=6,e_support);
-            }
-        }
-        translate([-l/2,0,-1])  m4(200);
-        translate([ 5,0,-1])  m4(200);
-        translate([ -5,0,-1])  m4(200);
-        translate([ l/2,0,-1])  m4(200);
-    }
-}
-
-x_vis_ih = 80;
-
-module support_colonne_ih(){
-    e = 40;
-    r  = colonne_d/2+8;
-    l = 120;
-    lg= 60;
-    
-    difference(){
-        union(){
-            cylinder(r=r, e);
-            translate([-l/2, -15, 0])cube([l, lg, e]);
-        }
-        translate([0, 0, -1]) cylinder(r=colonne_d/2, e+2);
-        cube([150, 5, 150], center = true);
-        
-        for(i=[-1,1]){
-            translate([i*x_vis_ih/2, -20, e/2]) rotate([-90,0,0]) m8(100, false);
-        }
-        
-    }
-    
-}
-
-/**
- * SAME
- **/
-
-lg_same_int = 25;
-h_same_int = 30;
-l_same = lg_int+28;
-
-
-
-module couronne_same(){
-    couronne1(d_same, 25, 8);
-}
-
-module support_couronne_same(){
-    difference(){
-        union(){
-            translate([-l_same/2-6,-6,0])cube([l_same+12, 12, e_support]);
-        }
-        translate([-l_same/2,0,-1])  m8(200);
-        translate([ l_same/2,0,-1])  m8(200);
-    }
-}
-
-x_vis_same = 140;
-x_vis_2 = 100;
 
 
 /**
@@ -178,6 +92,7 @@ lg_mk3_int = 36; //24
 h_mk3_int = 25; //25
 l_mk3 = lg_mk3_int+30;
 a_mk3 = 10;
+l_support = lg_int+28;
 
 x_vis_mk3 = 90;
 
@@ -186,14 +101,14 @@ module support_couronne_deutz(){
     h = 5;//9;//13; //18 //25
     difference(){
         union(){
-            translate([-l_same/2-8,-8,0])cube([l_same+16, 16, e_support]);
+            translate([-l_support/2-8,-8,0])cube([l_support+16, 16, e_support]);
             intersection(){
                 translate([0,h+12,9]) rotate([-a+20,0,0])cube([lg_mk3_int+12, 100, h_mk3_int+12], center = true);
-                translate([-l_same/2-6,-8,0])cube([l_same+12, 16, 70]);
+                translate([-l_support/2-6,-8,0])cube([l_support+12, 16, 70]);
             }
         }
-        translate([-l_same/2,0,-1])  m8(200);
-        translate([ l_same/2,0,-1])  m8(200);
+        translate([-l_support/2,0,-1])  m8(200);
+        translate([ l_support/2,0,-1])  m8(200);
         translate([0,h,3]) rotate([-a,0,0])cube([lg_mk3_int, 100, h_mk3_int], center = true);
         translate([0,0,3]) cube([lg_mk3_int, 100, h_mk3_int], center = true);
     }
@@ -241,24 +156,7 @@ module support_colonne_deutz(support = true){
     }
 }
 
-
-    
-/**
- * Common
- **/
-
-
-module support_colonne2(mode2){
-    if(tracteur == 0){
-        support_colonne2_same();
-    } else {
-        support_colonne2_ih();
-    }
-    
-}
-
-
-mode=2;
+mode=0;
 if(mode==0){
     couronne_deutz();
     for(i=[0:n]){
@@ -271,7 +169,7 @@ if(mode==0){
     
     
     translate([0,0,-160]) support_colonne_deutz();
-    translate([0,75,-160]) support_colonne2();
+    translate([0,0,-160]) rotate([0,0,180])support_colonne_deutz(false);
 
     translate([0,120,-25])rotate([-180,0,180]) support_moteur1();
     
@@ -288,10 +186,8 @@ if(mode==0){
 } else if(mode==6){
    rotate([0,0, 0])support_moteur3_bis();
 } else if(mode==7){
-    rotate([90,0, 0])support_colonne_deutz();
+   rotate([90,0, 0])support_colonne_deutz();
 } else if(mode==8){
-   support_moteur_same();
-} else if(mode==9){
-   support_capteur2();
+   rotate([90,0, 0])support_colonne_deutz(false);
 }
 

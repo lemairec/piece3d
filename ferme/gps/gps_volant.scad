@@ -33,7 +33,7 @@ d_case = 145;
 //0 same
 //1 5120
 //2 mk3
-tracteur = 2;
+tracteur = 0;
 
 
 
@@ -713,7 +713,7 @@ module support_moteur_same(){
 }
 
 
-mode=0;
+mode=5;
 if(mode==0){
     couronne(mode);
     
