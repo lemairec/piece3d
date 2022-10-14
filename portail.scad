@@ -43,7 +43,9 @@ module tube_2(l2){
     }
 }
 
-l=3900/2;
+l2 = 3840;
+l=3840/2-70-10;
+echo(l);
 h = 1700;
 dh = 200;
 
@@ -292,13 +294,91 @@ module portail3(l){
         
 }
 
-mode = 10;//4 10
+module portail4(l){
+    
+    color("black") translate([0,e_l,e_l]) rotate([-90,0,0])tube(l-2*e_l);
+    color("black") translate([0,e_l,h]) rotate([-90,0,0])tube(l-2*e_l+40);
+    color("black") translate([0,0])tube(h);
+    color("black") translate([0,l-e_l]) tube(h);;
+    
+    h2 = h/2;
+    color("black") translate([0,-40,h2-20]) rotate([90,0,0]) tube(l-40);
+        
+    intersection(){
+        translate([0,20, 40]) cube([20,l-60,h/2-40]);;
+        for(i = [-5:5]){
+            translate([10,i*200+115+l/2]) cube([20,170,h+10+i*20]);;
+        }
+    }
+    
+    intersection(){
+        translate([0,20, 40]) cube([50,l-60,h/2-40]);;
+        for(i = [-10:10]){
+            translate([20,i*100+50+l/2, 55]) rotate([0,90,0])cylinder(r=10,30, center = true);
+        }
+    }
+    
+    intersection(){
+        translate([0,20, 20+h/2]) cube([50,l-60,h/2-40]);;
+        for(i = [0:10]){
+            translate([10,i*280-10, h/2-200]) rotate([45,0,0])cube([20,170,h+10+i*20]);;
+        for(i = [-10:10]){
+            translate([20,i*140+l/2, h/2+35]) rotate([0,90,0])cylinder(r=10,30, center = true);
+        }
+        for(i = [-10:10]){
+            translate([20,i*140+80+l/2, h-55]) rotate([0,90,0])cylinder(r=10,30, center = true);
+        }
+        }
+    }
+}
+
+ecart = 175;
+diff = ecart - 150;
+
+module portail5(l){
+    
+    color("black") translate([0,e_l,e_l]) rotate([-90,0,0])tube(l-2*e_l);
+    color("black") translate([0,e_l,h]) rotate([-90,0,0])tube(l-2*e_l+40);
+    color("black") translate([0,0])tube(h);
+    color("black") translate([0,l-e_l]) tube(h);;
+    
+    h2 = h/2;
+    color("black") translate([0,-40,h2-20]) rotate([90,0,0]) tube(l-40);
+        
+    intersection(){
+        translate([0,20, 40]) cube([20,l-60,h/2-40]);;
+        for(i = [-5:5]){
+            translate([10,i*ecart+ecart/2+l/2+diff/2]) cube([20,150,h+10]);;
+        }
+    }
+    
+    for(i = [-9:8]){
+        translate([20,i*100+50+l/2, 55]) rotate([0,90,0])cylinder(r=10,30, center = true);
+    }
+    
+    
+    
+    intersection(){
+        translate([0,20, 20+h/2]) cube([50,l-60,h/2-40]);;
+        for(i = [-5:5]){
+            translate([10,i*200+100+25+l/2]) cube([20,150,h]);;
+        }
+    }
+}
+
+mode = 12;//4 10
+
+for(i=[0,1]){
+ mirror([0,i,0]) translate([-200,l2/2]) cube([400,400,2000]);
+}
 
 module portial_(l){
     if(mode == 10){
         portail2(l);
     } else if(mode == 11){
-        portail3(l);
+        portail4(l);
+    } else if(mode == 12){
+        portail5(l);
     } else {
         portail(l);
     }

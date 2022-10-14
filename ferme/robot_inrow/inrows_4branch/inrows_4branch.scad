@@ -1,6 +1,6 @@
 use <4040.scad>;
-use <../../libs/gears.scad>
-use <../../config.scad>
+use <../../../libs/gears.scad>
+use <../../../config.scad>
 
 e = 5;
 
@@ -12,14 +12,14 @@ helix_angle = 0;
 
 x_truc = 80;
 
-l = 130;
+l = 150;
 lg = 95;
 
 module pignon2(){
     difference(){
         spur_gear (modul=modul, tooth_number=tooth_number1, width=12, bore=2, pressure_angle=pressure_angle, helix_angle=helix_angle, optimized=false);
         translate([0,0,-1])cylinder(r=4.5, 35, $fn=16);
-        translate([0,0,5])cylinder(r=58/2, 35);
+        translate([0,0,5])cylinder(r=57.5/2, 35);
         
         //translate([7,0,20])rotate([0,-90,0])m3_nut(10);
         //translate([0,0,20])rotate([0,90,0])m3(20);
@@ -69,7 +69,7 @@ module support_moteur(){
 
     difference(){
         union(){
-            translate([-30,-60,0]) cube([l,lg,e]);
+            translate([-50,-60,0]) cube([l,lg,e]);
             translate([x_truc, 20,e/2-6]) cylinder(r=25/2,6);
         }
     
@@ -84,6 +84,7 @@ module support_moteur(){
         translate([x_truc+15, 20,-1]) cylinder(r=2,e+2);
         translate([x_truc, 20,e/2-7]) cylinder(r=22.5/2,7);
         
+        translate([-35, -50,-1]) cylinder(r=4.5,e+2);
         translate([-30+10, -50,-1]) cylinder(r=4.5,e+2);
         translate([30+10, -50,-1]) cylinder(r=4.5,e+2);
         translate([-30+120-10, -50,-1]) cylinder(r=4.5,e+2);
@@ -130,7 +131,7 @@ module support_angle(){
     }
 }
 
-mode=4;
+mode=1;
 if(mode==0){
     translate([-100,-50,0])rotate([0,90,0])barre4040(200);
 

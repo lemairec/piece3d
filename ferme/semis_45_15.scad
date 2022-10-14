@@ -4,13 +4,18 @@ $fa=$fa/4;
 
 cube([200,6000,1], center = true);
 
+%translate([0,80,1]) cube([200,4000,1], center = true);
+
 voie = true;
 bineuse12 = true;
 
 rayon15 = 30;
 rayon45 = 12;
 rayon75 = 0;
+rayon80 = 0;
 rayon60 = 0;
+
+cube([100,2440,30], center=true);
 
 ceuilleur50 = 0;
 ceuilleur60 = 0;
@@ -24,6 +29,12 @@ if(rayon45){
 if(rayon75){
     for(i=[1:rayon75]){
         translate([0,(i-(1+rayon45)/2)*750,1]) color("green") cube([400,10,1], center = true);
+    }
+}
+
+if(rayon80){
+    for(i=[1:rayon80]){
+        translate([0,(i-(1+rayon80)/2)*800,1]) color("red") cube([400,10,1], center = true);
     }
 }
 

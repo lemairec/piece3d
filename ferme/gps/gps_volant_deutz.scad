@@ -156,7 +156,33 @@ module support_colonne_deutz(support = true){
     }
 }
 
-mode=0;
+module support_colonne_7215(){
+    e = 30;
+    r1  = 56/2;
+    r2  = 74/2;
+    dr = r2-r1;
+    l = 120;
+    lg= 70;
+    
+    difference(){
+        union(){
+            translate([-l/2, -lg/2, 0])cube([l, lg, e]);
+        }
+        hull(){
+            translate([-dr, 0, -1])cylinder(r=r1, e+40);
+            translate([dr, 0, -1])cylinder(r=r1, e+40);
+            
+        }
+        translate([-75, -3, -75]) cube([150, 150, 150]);
+        
+        for(i=[-1,1]){
+            translate([i*x_vis_mk3/2, -50, e/2]) rotate([-90,0,0]) m8(100, false);
+        }
+        
+    }
+}
+
+mode=1;
 if(mode==0){
     couronne_deutz();
     for(i=[0:n]){
@@ -168,7 +194,7 @@ if(mode==0){
     
     
     
-    translate([0,0,-160]) support_colonne_deutz();
+    translate([0,0,-160]) support_colonne_deutzs();
     translate([0,0,-160]) rotate([0,0,180])support_colonne_deutz(false);
 
     translate([0,120,-25])rotate([-180,0,180]) support_moteur1();
@@ -186,8 +212,8 @@ if(mode==0){
 } else if(mode==6){
    rotate([0,0, 0])support_moteur3_bis();
 } else if(mode==7){
-   rotate([90,0, 0])support_colonne_deutz();
+   rotate([90,0, 0])support_colonne_7215();
 } else if(mode==8){
-   rotate([90,0, 0])support_colonne_deutz(false);
+   rotate([90,0, 0])support_colonne_7215();
 }
 

@@ -19,6 +19,16 @@ module tige(){
         translate([0, -6, 5]) rotate([0,90,0]) cylinder(r=2, 100, center = true);
         
     }
+    if(true){
+        rotate([0,0,180])
+        difference(){
+            translate([-5, 2.5, 0]) cube([10,1,10]);;
+            translate([-1, -1,-1]) cube([2,20,12]);
+        }
+    } else {
+        translate([-5, 2.5, 0]) cube([10,1,10]);;
+    }
+        
                 
 }
 
@@ -35,7 +45,7 @@ module support(){
             mirror([i,0,0])translate([25, 12.5, -1]) cylinder(r=2.2, 100, center = true);
         }
         for(i=[0,1]){
-            translate([7,0]) mirror([i,0,0])translate([25, 10, 10]) rotate([90,0,0]) cylinder(r=4.2, 100, center = true);
+            translate([7,0]) mirror([i,0,0])translate([25, 10, 10]) rotate([90,0,0]) cylinder(r=4.5, 100, center = true);
         }
         
     }
@@ -52,7 +62,7 @@ module support_tme(){
             mirror([i,0,0])translate([16, 23, -1]) cylinder(r=2.2, 100, center = true);
         }
         for(i=[0,1]){
-            mirror([i,0,0])translate([25, 10, 10]) rotate([90,0,0]) cylinder(r=4.2, 100, center = true);
+            mirror([i,0,0])translate([25, 10, 10]) rotate([90,0,0]) cylinder(r=4.5, 100, center = true);
         }
         
     }
@@ -61,7 +71,7 @@ module support_tme(){
 
 mode=1;
 if(mode==0){
-   support_tme();
+   support();
 } else {
    rotate([0,0,45])tige(); 
 }

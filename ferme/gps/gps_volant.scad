@@ -33,7 +33,7 @@ d_case = 145;
 //0 same
 //1 5120
 //2 mk3
-tracteur = 0;
+tracteur = 2;
 
 
 
@@ -520,7 +520,7 @@ module moteur(){
     translate([0, 7,0]) cylinder(r=6/2, 10);
 }
 
-r_moteur2 = 46/2;
+r_moteur2 = 46.5/2;
 module moteur2(){
     translate([0,0,0])cylinder(r=r_moteur2, 130);
     //translate([0,0,80])cylinder(r=r_moteur+4, 40);
@@ -713,7 +713,7 @@ module support_moteur_same(){
 }
 
 
-mode=5;
+mode=1;
 if(mode==0){
     couronne(mode);
     

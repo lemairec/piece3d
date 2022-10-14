@@ -43,7 +43,10 @@ module bas(){
         }
         translate([0,45, -1]) cylinder(r = 4, 10);
         
-        translate([0,-4, e]) cube([100,8,9]);
+        for(i=[-3:4]){
+           translate([(i-0.5)*10-2,-135, e]) cube([4,100,9]); 
+        }
+        //
         for(i = [-1,1]){
             translate([l2/2-5,i*8, -1]) cylinder(r = 1.7, 10);
             translate([-l2/2+5,i*10, -1]) cylinder(r = 1.7, 10);
@@ -82,7 +85,13 @@ module haut(){
     }
 }
 
-bas();
-
-rotate([0,180,0]) translate([0,0, -50])  haut();
+mode = 2;
+if(mode==0){
+    bas();
+    rotate([0,180,0]) translate([0,0, -50])  haut();
+} else if(mode==1){
+    bas();
+} else if(mode==2){
+    haut();
+}
     
