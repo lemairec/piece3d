@@ -131,7 +131,7 @@ module support_angle(){
     }
 }
 
-mode=1;
+mode=0;
 if(mode==0){
     translate([-100,-50,0])rotate([0,90,0])barre4040(200);
 

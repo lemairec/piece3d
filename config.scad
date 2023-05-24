@@ -34,6 +34,11 @@ m4_nut_d = 8.4;
 m4_nut_d2 = 7.5;
 m4_nut_h = 3.5;
 
+m5_r = 2.8;
+m5_nut_d = 9.5;
+m5_nut_d2 = 8;
+m5_nut_h = 4;
+
 m8_nut_d = 15.5;
 m8_nut_h = 7;
 
@@ -126,6 +131,12 @@ module nut(d=3, h=0, center=false){
         cylinder(m4_nut_h, r = m4_nut_d/2, $fn = 6, center = center);
         if(h!=0){
             cylinder(h, r = m4_nut_d/2, $fn = 6, center = center);
+        }
+    }
+    if(d==5){
+        cylinder(m5_nut_h, r = m5_nut_d/2, $fn = 6, center = center);
+        if(h!=0){
+            cylinder(h, r = m5_nut_d/2, $fn = 6, center = center);
         }
     }
     if(d==8){

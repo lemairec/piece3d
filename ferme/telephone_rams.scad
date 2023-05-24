@@ -86,7 +86,7 @@ module support(h, e){
 
 module support_rams(){
     h2 = 90;
-    h3 = 150;
+    h3 = 115;
     y_support = 40;
     e = 4;
     e2 = 8;
@@ -96,7 +96,7 @@ module support_rams(){
             translate([-tel_lg/2-de,0,0])cube([tel_lg+2*de, tel_e+10, h2]);
             hull(){
                 translate([-tel_lg/2-de,0,0])cube([tel_lg+2*de,e2, h2]);
-                translate([0,0,h3])rotate([-90,0,0])cylinder(r=5, e2);
+                translate([-20,0,h3])cube([40,e2, 1]);
             }
 
         }
