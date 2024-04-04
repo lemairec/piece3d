@@ -112,7 +112,7 @@ module corner(){
     }
 }
 
-mode = 2;
+mode = 0;
 if(mode == 0){
     translate([-18, 0, 20])rotate([0,90,0])grand_charriot();
     translate([-15, -150, 20])rotate([0,90,0])support_moteur();

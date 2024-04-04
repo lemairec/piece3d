@@ -29,4 +29,26 @@ module bouchon(){
     }
 }
 
-bouchon();
+difference(){
+    
+    bouchon();
+    
+    translate([8,0,-1])cylinder(r=1.5,h+e_h);
+    translate([-8,0,-1])cylinder(r=1.5,h+e_h);
+    
+    translate([0,-6,-1])cube([15,2,h], center=true);
+    
+    translate([8,-5,-1])cylinder(r=2,h+e_h);
+    translate([-8,-5,-1])cylinder(r=2,h+e_h);
+    
+    translate([8,5,-1])cylinder(r=2,h+e_h);
+    translate([-8,5,-1])cylinder(r=2,h+e_h);
+    
+    hull(){
+        translate([2,0,-1])cylinder(r=4,h+e_h);
+        translate([-2,0,-1])cylinder(r=4,h+e_h);
+    }
+    
+    
+    
+}

@@ -1,41 +1,44 @@
 use <4040.scad>;
 
+
 e = 5;
+$fs=$fs/2;
+$fa=$fa/2;
 
-module moteur3d(){
+
+
+module support_moteur3d(){
     difference(){
 
-        union(){
-            translate([-30,-30,0]) cube([60,90,e]);
-            translate([-2,-30,0]) cube([4,90,2*e]);
-        }
-        
-        for(i = [-1,1]){
-            translate([i*20, 10,-1]) cylinder(r=2.5,e+2);
-            translate([i*20, 50,-1]) cylinder(r=2.5,e+2);
-        }
-        translate([20, 30,-1]) cylinder(r=5,e+2);
-        
-        translate([-15, -20,-1]) cylinder(r=4.5,e+2);
-        translate([ 15, -20,-1]) cylinder(r=4.5,e+2);
-    }
-}
-
-module moteur2d(){
-    difference(){
-
-        translate([-30,-30,0]) square([60,90]);
+        translate([-40,-30,0]) square([80,90]);
 
         
         for(i = [-1,1]){
-            translate([i*20, 10]) circle(r=2.5);
-            translate([i*20, 50]) circle(r=2.5);
+            translate([i*20, 10]) circle(r=2.2);
+            translate([i*20, 50]) circle(r=2.2);
         }
         translate([20, 30]) circle(r=5);
         
-        translate([-15, -20])circle(r=4.5,e+2);
-        translate([ 15, -20]) circle(r=4.5,e+2);
+        translate([-25, -20])circle(r=4.2);
+        translate([ 25, -20]) circle(r=4.2);
     }
 }
 
-moteur2d();
+
+module moteur3d(){
+    translate([-30, -25,-25])cube([60,100,25]);
+    for(i = [-1,1]){
+        translate([i*20, 0]) cylinder(r=2.2,10);
+        translate([i*20, 40]) cylinder(r=2.2,10);
+    }
+    translate([0, 0]) cylinder(r=5,10);
+    translate([0, 50,-75]) cylinder(r=20,75);
+    
+    translate([0, 0,10])  cylinder(r=125, 50);
+}
+
+
+
+for(i=[0,1]){
+    support_moteur3d();
+}

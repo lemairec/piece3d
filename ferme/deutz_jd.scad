@@ -33,10 +33,10 @@ module antirotation_mk3(){
 module d_7215(){
     difference(){
         union(){
-            polygon([[-93,-62],[-80,-66], [-50,-72],
+            polygon([[-95,-63],[-80,-66], [-50,-72],
             [-5,-68], [7,-62],[22,-51], [34,-40], [42,-30], [46,-21], [49,-10],
             [50,0],[49,10], [46,20], [40, 30], [30, 40], [23, 45], [10,50],
-            [0,52] ,[-28,50] ,[-44, 45], [-53,41], [-84,23], [-90,18]]);
+            [0,52] ,[-28,50] ,[-44, 45], [-53,41], [-84,23], [-91,18]]);
          
         }
         circle(r=15);
@@ -59,7 +59,7 @@ module antirotation_7215(){
         }
         translate([0,0,1]) mirror([0,1]) rotate([0,0,-20])linear_extrude(height = 40) d_7215();
         translate([0,0,-1])cylinder(r=20, h=40);
-        translate([-100,-15,26]) mirror([0,1]) rotate([0,-90,-20])cylinder(r=25, h=100, center = true);
+        translate([-100,-18,26]) mirror([0,1]) rotate([0,-90,-20])cylinder(r=25, h=100, center = true);
         %cylinder(r=65,h=10);
     }
 }

@@ -100,7 +100,7 @@ module all(){
     
 }
 
-mode = 1;
+mode = 2;
 if(mode == 0){
     all();
 } else if(mode == 1){
