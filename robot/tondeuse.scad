@@ -11,13 +11,16 @@ h_lame = 70;
 
 lg = 300;
 
-l = 500;
+l = 550;
 
-l1 = 50;
+l1 = 130;
 l_mot = 90;
-l_tondeuse = 210;
-l2 = 370;
-l_roue = 440;
+l_tondeuse = 280;
+l2 = l_tondeuse + 150;
+l_roue = l2+80;
+
+h = 80;
+h2 = 120;
 
 module support_diff_moteur2d(){
     union(){
@@ -78,11 +81,8 @@ module piece_trans(){
     linear_extrude(3){
         difference(){
             union(){
-                square([l,60]);
-                translate([l_mot, 0, 0]) translate([0, -40, 0]) hull(){
-                    translate([-40, 0, 0])square([80,60]);
-                    translate([-80, 40, 0]) square([80+80,60]);
-                }
+                square([l,h]);
+                translate([0, -h2+h, 0])square([l,h2]);
             }
             translate([l_mot, -10, 0]) rotate([0,0,-90])support_diff_moteur2d();
         }
@@ -90,32 +90,70 @@ module piece_trans(){
     }
 }
 
+module piece_bas_2d(){
+    difference(){
+        union(){
+            translate([-lg/2, 0, 0]) square([lg,l1]);
+        }
+    }
+}
+
+module piece_bas(){
+    linear_extrude(3){
+        piece_bas_2d();
+    }
+}
+
+module piece_haut(){
+    linear_extrude(3){
+        difference(){
+            translate([-lg/2, 0, 0]) square([lg,l]);
+            piece_bas_2d();   
+        }
+        
+    }
+}
 
 
 
 mode = 0;
+
+
+module lame2(){
+    lame();
+    for(i=[0,1]){
+        mirror([i,0,0]) translate([-120, -10, -1.5]) cube([30,20,1]);
+    }
+}
+        
 
 if(mode == 0){
     for(i=[0,1]){
         mirror([i,0,0]) translate([150, l_mot, d_roue]) rotate([90,0,90])moteur3d();
     }
 
-    translate([0, 0,100])union(){
+    color("blue")translate([0, 0,100])union(){
         for(i=[0,1]){
             
             mirror([i,0,0]) translate([lg/2, 0, 0]) rotate([90,0,90])piece_trans();
         }
-        translate([-150, l1, 0]) cube([lg,3,60]);
+        translate([-150, l1, 0]) cube([lg,3,h]);
         //translate([-150, 0, 0]) cube([lg,3,60]);
-        translate([-150, l2, 0]) cube([lg,3,60]);
+        translate([-150, l2, 0]) cube([lg,3,h]);
+        translate([-150, l, 0]) cube([lg,3,h]);
+        translate([0,0, -40]) piece_bas();
+        translate([0,0, 0]) piece_haut();
     }
     
     translate([0, l_tondeuse, h_lame]) union(){
-        lame();
-        cylinder(r=150,1);
+        lame2();
+        %rotate([00,0,90])lame2();
+        %cylinder(r=150,80);
     }
 
     translate([0, l_roue,0]) rotate([0,0,180]) roue();
-} else {
+} else if(mode == 1){
     piece_trans();
+} else if(mode == 2){
+    piece_bas();
 }
