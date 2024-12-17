@@ -197,7 +197,7 @@ module support_twin(){
 };
 
 
-mode = 0;
+mode = 1;
 if(mode == 1){
     l = 305;
     translate([l, 0,200])rotate([0,90,0]) union(){
