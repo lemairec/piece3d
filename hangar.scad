@@ -33,17 +33,19 @@ module o_hangar_bas(){
 }
 
 module o_hangar2(){
-    translate([0, 0, 0]) cube([o_hangar_lg, o_hangar_t*4-500, 1]);
+    o_i=3;
+    o_i2=11-o_i;
+    //translate([0, 0, 0]) cube([o_hangar_lg, o_hangar_t*4-500, 1]);
     
-    translate([0, o_hangar_t*4, 0]) union(){
-        cube([o_hangar_lg, o_hangar_t*7, 1]);
-        for(i=[0:7]){
+    translate([0, o_hangar_t*o_i2, 0]) union(){
+        cube([o_hangar_lg, o_hangar_t*3, 1]);
+        for(i=[0:o_i]){
             translate([0, i*o_hangar_t, 0]) o_trave();
         }
         
         if(toit){
-            translate([0, 0, o_hangar_h]) rotate([0,-30,0])cube([5600,o_hangar_t*7, 1]);
-            translate([o_hangar_lg+3000, 0, 5000+200]) rotate([0,180+25,0])cube([9000,o_hangar_t*7, 1]);
+            translate([0, 0, o_hangar_h]) rotate([0,-30,0])cube([5600,o_hangar_t*3, 1]);
+            translate([o_hangar_lg+3000, 0, 5000+200]) rotate([0,180+25,0])cube([9000,o_hangar_t*3, 1]);
         }
     }
 }
@@ -139,7 +141,7 @@ module hangar_m(){
 lg_hangar = 20000;
 l_hangar = 84000;
 h1 = 5000;
-h2 = 8500;
+h2 = 8000;
 
 h_ = 9400;
 l_ = 17500;
@@ -178,31 +180,65 @@ module hangar_wolf(){
     
 }
 
+w2_lg_hangar = 24000;
+w2_l_hangar = 48000;
+w2_h1 = 5000;
+w2_h2 = 8000;
 
-module f_wolf(){
-    translate([lg_hangar, 0]) translate([-750,-750,-1500])cube([1500,1500, 1500]);
-    translate([0, 0])translate([-750,-750,-1500])cube([1500,1500, 1500]);
+w2_h_ = 9400;
+w2_l_ = 17500;
+
+w2_angle = 14;
+
+w2_angle2 = 26.3;
+
+w2_l3 = 21000;
+w2_l4 = 4000;
+
+w2_travee_l1 = 6000;
+
+module w2_trave(){
+    translate([w2_lg_hangar, 0])cube([200,200, w2_h2]);
+    //%translate([20000, 0])cube([200,200, 10000]);
+    translate([00, 0])cube([200,200, w2_h1]);
+    translate([0, 0, w2_h1]) rotate([0,90-w2_angle,0])cube([200,200, w2_l3]);
+    translate([w2_lg_hangar, 0, h2]) rotate([0,-90+w2_angle2,0])cube([200,200, w2_l4]);
 }
 
-module fondation_wolf(){
-    translate([0, -150, -500]) cube([lg_hangar, 300, 300]);
-    translate([0, 14*travee_l1-150, -500]) cube([lg_hangar, 300, 300]);
-    translate([0, -150, -500]) cube([300, l_hangar, 300]);
-    translate([lg_hangar, -150, -500]) cube([300, l_hangar, 300]);
+module w2_hangar(){
+    ///translate([0, 0, 0]) cube([lg_hangar, l_hangar, 1]);
+
+
+
+    w2_trave();
+    translate([0, 2*travee_l1, 0]) w2_trave();
+    translate([0, 4*travee_l1, 0]) w2_trave();
+    translate([0, 6*travee_l1, 0]) w2_trave();
+    translate([0, 8*travee_l1, 0]) w2_trave();
+    
+    if(toit){
+        translate([0, 0, w2_h1]) rotate([0,90-w2_angle,0])cube([1,w2_l_hangar, w2_l3]);
+        translate([w2_lg_hangar, 0, h2]) rotate([0,-90+w2_angle2,0])cube([1,w2_l_hangar, w2_l4]);
+    }
+    
+}
+
+module w2_hangar_int(){
+    color("gray") cube([w2_lg_hangar,200,2000]);
+    color("gray") cube([200,w2_l_hangar,2000]);
+    cube([20,w2_l_hangar,5000]);
+    color("gray") translate([0, 4*travee_l1, 0]) cube([w2_lg_hangar,200,2000]);
+    hull()w2_trave();
+    
+    color("gray") translate([0, 2*travee_l1, 0]) cube([w2_lg_hangar,200,2000]);
+    hull()w2_trave();
+    translate([0, 4*travee_l1, 0])hull()w2_trave();
+    translate([0, 8*travee_l1, 0])hull()w2_trave();
+    
+    translate([4*travee_l1, 2*travee_l1,0])cube([20,6000,8000]);
+    translate([4*travee_l1, 3*travee_l1,0])cube([20,6000,8000]);
     
     
-    f_wolf();
-    translate([0, 2*travee_l1, 0]) f_wolf();
-    translate([0, 4*travee_l1, 0]) f_wolf();
-    translate([0, 6*travee_l1, 0]) f_wolf();
-    translate([0, 8*travee_l1, 0]) f_wolf();
-    translate([0, 10*travee_l1, 0]) f_wolf();
-    translate([0, 12*travee_l1, 0]) f_wolf();
-    translate([0, 14*travee_l1, 0]) f_wolf();
-    
-    echo("plot");
-    echo(8*2*1.5*1.5*1.5);
-    echo((l_hangar+lg_hangar)*0.3*0.3*2/1000);
 }
 
 module benne(angle){
@@ -225,41 +261,31 @@ module benne(angle){
     }
 }
 
-module trave_beton(){
-    cube([200,12000,2000]);
-    cube([20000,200,2000]);
-    translate ([0,0,-200])cube([20000,12000,200]);
-    translate ([0,12000,0]) cube([20000,200,2000]);
-}
 
-module trave_ventille(){
-    translate ([0,6000,0]) cube([17000,400,800]);
+module canivaux(){
+    canivau_rev = 700;
+    canivau_l = 12000;
+    canivau_l2 = 12000;
+    canivau_dl = 2000;
+    nb = 3;
     
-    for(i =[0:7]){
-        
-        translate ([1000,800 +i*1500,-300]) cube([15000,300,350]);
+    vent_h = 300;
+    vent_r = 200;
+    for(i=[0:nb-1]){
+        translate([0,(2*i+0.5)*canivau_dl-250/2,-250]) cube([canivau_l, 250, 250]);
     }
-}
-
-
-module trave_elevateur(){
-    translate ([0,12000,0]) cube([20000,200,2000]);
-    
-    //fosse
-    translate ([12000,1000,30]) hull(){
-        cube([4000,4000,35]);
-        translate ([0,2000, -3000]) cube([30,30,30]);
+    for(i=[0:nb-1]){
+        translate([0,(2*i+1.5)*canivau_dl-250/2,-250]) cube([canivau_l2, 250, 250]);
+    }
+    for(i=[0:(nb*2)-1]){
+        translate([-canivau_rev,(i+0.5)*canivau_dl-250/2,-250]) cube([canivau_rev, 250, 250]);
+        translate([-canivau_rev,(i+0.5)*canivau_dl-250/2,-250]) cube([250, 250, 750]);
     }
     
-    //elevateur
-    translate ([10000,1000,30]) cube([1500,4000,35]);
-    
-    
-    translate ([11000,3000,-4000]) cube([400,400,12000]);
-    translate ([10000,-10000,7000]) cube([300,15000,350]);
+    translate([-canivau_rev+125,0,vent_h+vent_r]) rotate([-90,0,0]) cylinder(12000, r= vent_r);
 }
 
-mode = 1;
+mode = 5;
 
  /*translate([8100, 0000]) rotate([0,0,-9.5])union(){
         %polygon([[0,0], [-8600, 0],  [-9600, 8000], [-0, 7800]]);
@@ -271,7 +297,7 @@ mode = 1;
 
 if(mode == 0){
     %polygon([[0, 8300], [0, 74300],  [20800,76500], [9600, 6600]]);
-    
+    translate([20800, 15000]) rotate([0,0,-9.5])o_hangar();
 
     
     
@@ -281,46 +307,26 @@ if(mode == 0){
     translate([20800, 15000]) rotate([0,0,-9.5]) o_hangar_bas();
     translate([5000, 5000]) hangar_m();
 } else if(mode == 2){
-    %translate([10000, 17000, 0]) o_hangar();
-    
-    translate([-8500+5000, 4000]) rotate([0, 0, 9]) union(){
-        color("gray")fondation_wolf();
-    }
+    %polygon([[0, 8300], [0, 74300],  [20800,76500], [9600, 6600]]);
+    %translate([20800, 15000]) rotate([0,0,-9.5])o_hangar();
+    translate([20800, 15000]) rotate([0,0,-9.5]) o_hangar_bas();
+    translate([5000, 5000]) w2_hangar();
+    translate([9000, 9000])benne(30);
 }else if(mode == 3){
-    translate([5000, 4000])union(){
-        //hangar_wolf();
-        hangar_screb();
-        %translate([-1000, 0])  translate([5000, 3000])benne(30);
-        color("gray")fondation_wolf();
-    }
-     %translate([8100, 0000]) rotate([0,0,-9.5]) translate([10000, 17000, 0]) o_hangar();
-   
+    translate([20800, 15000]) rotate([0,0,-9.5])o_hangar2();
+    translate([20800, 15000]) rotate([0,0,-9.5]) o_hangar_bas();
+    translate([5000, 5000]) w2_hangar();
+    translate([9000, 9000])benne(25);
 } else if(mode == 4){
-    translate([-8500+5000, 4000]) rotate([0, 0, 9]) union(){
-        hangar_wolf();
-        color("gray")fondation_wolf();
-        %translate([-1000, 0])  translate([5000, 3000])benne(25);
-        color("gray") trave_beton();
-        color("gray") translate([0, 12000])trave_beton();
-        color("blue") translate([0, 12000]) trave_ventille();
+    translate([20800, 15000]) rotate([0,0,-9.5])o_hangar2();
+    translate([5000, 5000]) w2_hangar();
+    translate([5000, 5000]) w2_hangar_int();
+    translate([9000, 9000])benne(25);
+} else if(mode == 5){
+    translate([20800, 15000]) rotate([0,0,-9.5])o_hangar2();
+    translate([5000, 5000]) w2_hangar();
+    translate([5000, 5000]) canivaux();
+    translate([5000, 5000]) w2_hangar_int();
+    translate([9000, 7000])benne(25);
+}
     
-        
-    }
-} else if(mode == 10){
-    %polygon([[0,0], [-8600, 0],  [-9600, 8000], [-0, 7800]]);
-    %polygon([[-0, 7800], [-9600, 8000],  [-20500,72300], [-0, 78350]]);%translate([10000, 17000, 0]) o_hangar();
-    
-    translate([-8500+5000, 4000]) rotate([0, 0, 9]) union(){
-        color("gray")fondation_wolf();
-    }
-}   else {
-    hangar_wolf();
-        color("gray")fondation_wolf();
-        %translate([-1000, 0])  translate([5000, 3000])benne(25);
-        color("gray") trave_beton();
-        color("gray") translate([0, 12000])trave_beton();
-        color("blue") translate([0, 12000]) trave_ventille();
-    color("green") translate([0, 24000]) trave_elevateur();
-} 
-
-
